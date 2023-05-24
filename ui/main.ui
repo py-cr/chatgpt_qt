@@ -92,18 +92,17 @@
     <addaction name="action_close_others"/>
     <addaction name="separator"/>
    </widget>
-   <widget class="QMenu" name="menu_H">
+   <widget class="QMenu" name="menu_help">
     <property name="title">
      <string>帮助(&amp;H)</string>
     </property>
-    <addaction name="action_prompt"/>
-    <addaction name="separator"/>
     <addaction name="action_about"/>
+    <addaction name="action_prompt"/>
    </widget>
    <addaction name="menu_chat"/>
    <addaction name="menu_settings"/>
    <addaction name="menu_window"/>
-   <addaction name="menu_H"/>
+   <addaction name="menu_help"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="action_new_chat">
@@ -173,7 +172,7 @@
   </action>
   <action name="action_prompt">
    <property name="text">
-    <string>提示词大全</string>
+    <string>指令推荐</string>
    </property>
   </action>
   <action name="action_chatbots">

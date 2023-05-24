@@ -73,14 +73,14 @@ class MainWindow(QMainWindow, UiMixin):
             self.menu_chat, self.action_new_chat, self.action_chat_history, self.action_exit, self.menu_settings,
             self.action_openai_setting, self.action_roles, self.menu_window, self.action_categories,
             self.action_win_cascade, self.action_win_tile, self.action_recycle_bin, self.action_function,
-            self.action_win_min, self.action_win_max, self.action_chatbots,self.action_prompt,
-            self.action_close_others, self.action_close_all_win, self.action_tab_fun, self.action_about
+            self.action_win_min, self.action_win_max, self.action_chatbots, self.action_prompt,
+            self.action_close_others, self.action_close_all_win, self.action_tab_fun, self.action_about, self.menu_help
         ], [
             "comment.png", "comment.png", "history.png", "sign-out.png", "settings.png",
             "config.png", "brainstorming.png", "windows.png", "category.png",
             "application_cascade.png", "application_tile_horizontal.png", "bin.png", "button-color-circle.png",
             "application-min.png", "application.png", "bubbles3.png", "star.png",
-            "application_delete.png", "application_cascade_delete.png", "tab.png", "star.png"
+            "application_delete.png", "application_cascade_delete.png", "tab.png", "star.png", "help.png"
         ])
 
     def open_about(self):
@@ -271,6 +271,9 @@ class MainWindow(QMainWindow, UiMixin):
         return None
 
     def open_prompt(self):
+        open_url("https://xinghuo.xfyun.cn/instruction")
+
+    def open_prompt2(self):
         """
         打开一个提示语页面
         :return:
