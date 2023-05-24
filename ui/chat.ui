@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>930</width>
+    <height>629</height>
+   </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>16777215</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QWidget" name="verticalLayoutWidget_3">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>40</y>
+     <width>901</width>
+     <height>531</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="layout_main">
+    <item>
+     <widget class="QFrame" name="frame_2">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>40</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QWidget" name="horizontalLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>751</width>
+         <height>33</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="leftMargin">
+         <number>7</number>
+        </property>
+        <property name="topMargin">
+         <number>7</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>聊天主题</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="txt_title">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>23</height>
+           </size>
+          </property>
+          <property name="maxLength">
+           <number>50</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>分类</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="cmb_categories">
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QWidget" name="verticalLayoutWidget_2">
+       <layout class="QVBoxLayout" name="layout_left">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <property name="leftMargin">
+           <number>7</number>
+          </property>
+          <item>
+           <widget class="QCheckBox" name="chk_auto_wrap">
+            <property name="text">
+             <string>自动换行</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="chk_md">
+            <property name="text">
+             <string>MD格式</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_stop">
+            <property name="text">
+             <string>停止</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTextEdit" name="txt_main">
+          <property name="lineWrapMode">
+           <enum>QTextEdit::NoWrap</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="verticalLayoutWidget">
+       <layout class="QVBoxLayout" name="layout_right">
+        <item>
+         <layout class="QFormLayout" name="formLayout">
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_4">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>AI模型</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="cmb_ai_model">
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>AI角色</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="cmb_ai_role"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTabWidget" name="tab_main">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="currentIndex">
+           <number>3</number>
+          </property>
+          <widget class="QWidget" name="tab_text">
+           <attribute name="title">
+            <string>聊天</string>
+           </attribute>
+           <widget class="QWidget" name="verticalLayoutWidget_4">
+            <property name="geometry">
+             <rect>
+              <x>40</x>
+              <y>40</y>
+              <width>353</width>
+              <height>391</height>
+             </rect>
+            </property>
+            <layout class="QVBoxLayout" name="layout_text">
+             <property name="leftMargin">
+              <number>3</number>
+             </property>
+             <property name="topMargin">
+              <number>3</number>
+             </property>
+             <property name="rightMargin">
+              <number>5</number>
+             </property>
+             <item>
+              <widget class="QPlainTextEdit" name="txt_chat">
+               <property name="toolTip">
+                <string>按 Ctrl+回车，可以立刻发送消息</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_2">
+               <item>
+                <spacer name="horizontalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="chk_msg_context">
+                 <property name="text">
+                  <string>停用上下文</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btn_clear_context">
+                 <property name="minimumSize">
+                  <size>
+                   <width>120</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;聊天会带上历史上下文的消息，如果消息过多，OpenAI无法正常工作时，点击将清理上下文消息到指定大小（设置-&amp;gt;OpenAi设置）&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <property name="text">
+                  <string>清理上下文(0)</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btn_send">
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>发送</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QFrame" name="frame">
+                 <property name="frameShape">
+                  <enum>QFrame::StyledPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Raised</enum>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QGridLayout" name="grid_core_func">
+               <property name="leftMargin">
+                <number>7</number>
+               </property>
+               <property name="topMargin">
+                <number>7</number>
+               </property>
+               <property name="rightMargin">
+                <number>7</number>
+               </property>
+              </layout>
+             </item>
+             <item>
+              <spacer name="verticalSpacer">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+          <widget class="QWidget" name="tab_oa">
+           <attribute name="title">
+            <string>工作助理</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tab_food">
+           <attribute name="title">
+            <string>家庭厨师</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tab_voice_chat">
+           <attribute name="title">
+            <string>语音交流</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tab_douyin">
+           <attribute name="title">
+            <string>抖音帮手</string>
+           </attribute>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

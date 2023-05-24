@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1014</width>
+    <height>633</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>ChatGPT</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QMdiArea" name="mdiArea">
+    <property name="geometry">
+     <rect>
+      <x>49</x>
+      <y>49</y>
+      <width>911</width>
+      <height>521</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="lineWidth">
+     <number>1</number>
+    </property>
+   </widget>
+   <widget class="QProgressBar" name="progressBar">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>590</y>
+      <width>221</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>24</number>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1014</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_chat">
+    <property name="title">
+     <string>聊天(&amp;C)</string>
+    </property>
+    <addaction name="action_new_chat"/>
+    <addaction name="action_chatbots"/>
+    <addaction name="separator"/>
+    <addaction name="action_chat_history"/>
+    <addaction name="action_recycle_bin"/>
+    <addaction name="separator"/>
+    <addaction name="action_exit"/>
+   </widget>
+   <widget class="QMenu" name="menu_settings">
+    <property name="title">
+     <string>设置(&amp;S)</string>
+    </property>
+    <addaction name="action_openai_setting"/>
+    <addaction name="separator"/>
+    <addaction name="action_roles"/>
+    <addaction name="action_categories"/>
+    <addaction name="action_function"/>
+    <addaction name="action_tab_fun"/>
+   </widget>
+   <widget class="QMenu" name="menu_window">
+    <property name="title">
+     <string>窗口(&amp;W)</string>
+    </property>
+    <addaction name="action_win_min"/>
+    <addaction name="action_win_max"/>
+    <addaction name="action_win_cascade"/>
+    <addaction name="action_win_tile"/>
+    <addaction name="separator"/>
+    <addaction name="action_close_all_win"/>
+    <addaction name="action_close_others"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menu_H">
+    <property name="title">
+     <string>帮助(&amp;H)</string>
+    </property>
+    <addaction name="action_prompt"/>
+   </widget>
+   <addaction name="menu_chat"/>
+   <addaction name="menu_settings"/>
+   <addaction name="menu_window"/>
+   <addaction name="menu_H"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="action_new_chat">
+   <property name="text">
+    <string>新开聊天(&amp;N)</string>
+   </property>
+  </action>
+  <action name="action_chat_history">
+   <property name="text">
+    <string>聊天历史(&amp;H)</string>
+   </property>
+  </action>
+  <action name="action_exit">
+   <property name="text">
+    <string>退出(&amp;X)</string>
+   </property>
+  </action>
+  <action name="action_openai_setting">
+   <property name="text">
+    <string>OpenAi</string>
+   </property>
+  </action>
+  <action name="action_roles">
+   <property name="text">
+    <string>AI角色</string>
+   </property>
+  </action>
+  <action name="action_proxy">
+   <property name="text">
+    <string>代理设置</string>
+   </property>
+  </action>
+  <action name="action_win_min">
+   <property name="text">
+    <string>窗口最小化</string>
+   </property>
+  </action>
+  <action name="action_win_max">
+   <property name="text">
+    <string>窗口最大化</string>
+   </property>
+  </action>
+  <action name="action_win_tile">
+   <property name="text">
+    <string>窗口平铺排列</string>
+   </property>
+  </action>
+  <action name="action_win_cascade">
+   <property name="text">
+    <string>窗口重叠排列</string>
+   </property>
+  </action>
+  <action name="action_categories">
+   <property name="text">
+    <string>话题分类</string>
+   </property>
+  </action>
+  <action name="action_recycle_bin">
+   <property name="text">
+    <string>聊天回收站</string>
+   </property>
+  </action>
+  <action name="action_function">
+   <property name="text">
+    <string>按钮功能</string>
+   </property>
+  </action>
+  <action name="action_prompt">
+   <property name="text">
+    <string>提示词大全</string>
+   </property>
+  </action>
+  <action name="action_chatbots">
+   <property name="text">
+    <string>机器人自聊</string>
+   </property>
+   <property name="iconText">
+    <string>机器人自聊</string>
+   </property>
+   <property name="toolTip">
+    <string>机器人自聊</string>
+   </property>
+  </action>
+  <action name="action_close_all_win">
+   <property name="text">
+    <string>关闭所有的窗口</string>
+   </property>
+  </action>
+  <action name="action_close_others">
+   <property name="text">
+    <string>关闭其他窗口</string>
+   </property>
+  </action>
+  <action name="action_tab_fun">
+   <property name="text">
+    <string>页签功能</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
