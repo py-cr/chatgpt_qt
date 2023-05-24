@@ -56,6 +56,12 @@ pip install -i https://pypi.douban.com/simple/ pyqt5 pyqt5-tools sip pyqt5.sip P
 chatgpt_main.py
 ```
 
+# 使用说明
+```markdown
+1. 打开菜单 [设置] -> [OpenAI]，必须设置 API Key
+2. 打开菜单 [聊天] -> [新开聊天]，打开一个新的聊天窗口
+```
+
 # UI设计器
 ```shell script
 ui_designer.py
