@@ -97,6 +97,8 @@
      <string>帮助(&amp;H)</string>
     </property>
     <addaction name="action_prompt"/>
+    <addaction name="separator"/>
+    <addaction name="action_about"/>
    </widget>
    <addaction name="menu_chat"/>
    <addaction name="menu_settings"/>
@@ -198,6 +200,11 @@
   <action name="action_tab_fun">
    <property name="text">
     <string>页签功能</string>
+   </property>
+  </action>
+  <action name="action_about">
+   <property name="text">
+    <string>最新动态</string>
    </property>
   </action>
  </widget>

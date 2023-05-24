@@ -16,7 +16,7 @@ from common.ui_mixin import UiMixin
 import os
 import sys
 
-from common.ui_utils import find_ui, find_image
+from common.ui_utils import find_ui, find_image, open_url
 
 
 class ComingSoon(QWidget, UiMixin):
@@ -26,7 +26,7 @@ class ComingSoon(QWidget, UiMixin):
         w, h = int(563 / 1.5), int(840 / 1.5)
         # 从 .ui 文件加载 UI
         r = loadUi(find_ui(f"ui/coming_soon.ui"), self)
-        self.label.setGeometry(150, 38, 251, 51)
+        self.link_about.setGeometry(145, 38, 255, 51)
         image_file = find_image("douyin_x.jpg")
         self.graphicsView.setGeometry(20, 20, w+10, h+10)  # QGraphicsView 位置 (20, 20) 和大小 260x200
         scene = QGraphicsScene()  # 加入 QGraphicsScene
@@ -38,3 +38,8 @@ class ComingSoon(QWidget, UiMixin):
         img = img.scaled(w, h)  # 调整图片大小為 120x160
         scene.addPixmap(img)  # 將图片加入 scene
         self.graphicsView.setScene(scene)  # 设定 QGraphicsView 的场景為 scene
+
+        self.link_about.clicked.connect(self.open_about)
+
+    def open_about(self):
+        open_url("https://gitcode.net/pythoncr/index")

@@ -18,7 +18,7 @@ from common.app_config import DB_NAME
 from common.chat_utils import MSG_HISTORY_RECORD_SO_MUCH
 from common.message_box import MessageBox
 from common.ui_mixin import UiMixin
-from common.ui_utils import find_ui
+from common.ui_utils import find_ui, open_url
 from db.db_ops import ConfigOp
 from db.db_ops import HistoryOp
 from db.db_ops import SessionOp
@@ -73,15 +73,18 @@ class MainWindow(QMainWindow, UiMixin):
             self.menu_chat, self.action_new_chat, self.action_chat_history, self.action_exit, self.menu_settings,
             self.action_openai_setting, self.action_roles, self.menu_window, self.action_categories,
             self.action_win_cascade, self.action_win_tile, self.action_recycle_bin, self.action_function,
-            self.action_win_min, self.action_win_max, self.action_chatbots,
-            self.action_close_others, self.action_close_all_win, self.action_tab_fun
+            self.action_win_min, self.action_win_max, self.action_chatbots,self.action_prompt,
+            self.action_close_others, self.action_close_all_win, self.action_tab_fun, self.action_about
         ], [
             "comment.png", "comment.png", "history.png", "sign-out.png", "settings.png",
             "config.png", "brainstorming.png", "windows.png", "category.png",
             "application_cascade.png", "application_tile_horizontal.png", "bin.png", "button-color-circle.png",
-            "application-min.png", "application.png", "bubbles3.png",
-            "application_delete.png", "application_cascade_delete.png", "tab.png"
+            "application-min.png", "application.png", "bubbles3.png", "star.png",
+            "application_delete.png", "application_cascade_delete.png", "tab.png", "star.png"
         ])
+
+    def open_about(self):
+        open_url("https://gitcode.net/pythoncr/index")
 
     def bind_events(self):
         """
@@ -104,6 +107,7 @@ class MainWindow(QMainWindow, UiMixin):
         self.action_categories.triggered.connect(self.categories_settings)
         self.action_prompt.triggered.connect(self.open_prompt)
         self.action_recycle_bin.triggered.connect(self.open_recycle_bin)
+        self.action_about.triggered.connect(self.open_about)
 
         self.mdiArea.subWindowActivated.connect(self.handle_subwindow_activated)
         self.action_close_others.triggered.connect(self.close_others_win)

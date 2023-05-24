@@ -13,27 +13,6 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>160</x>
-     <y>30</y>
-     <width>251</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>15</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(255, 255, 255);</string>
-   </property>
-   <property name="text">
-    <string>马上就来，敬请关注！</string>
-   </property>
-  </widget>
   <widget class="QGraphicsView" name="graphicsView">
    <property name="geometry">
     <rect>
@@ -50,8 +29,37 @@
     <enum>QFrame::NoFrame</enum>
    </property>
   </widget>
-  <zorder>graphicsView</zorder>
-  <zorder>label</zorder>
+  <widget class="QCommandLinkButton" name="link_about">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>10</y>
+     <width>281</width>
+     <height>48</height>
+    </rect>
+   </property>
+   <property name="mouseTracking">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 127);
+font: 14pt &quot;微软雅黑&quot;;
+text-decoration: underline;</string>
+   </property>
+   <property name="text">
+    <string>敬请关注，最新动态</string>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>../images/icons/star-on.png</normaloff>../images/icons/star-on.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>30</width>
+     <height>30</height>
+    </size>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

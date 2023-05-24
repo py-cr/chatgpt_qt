@@ -150,6 +150,13 @@ def get_html_style():
 """
 
 
+def open_url(url):
+    if os.name == 'posix':
+        os.system("open " + str(url))
+    elif os.name == 'nt':
+        os.system("start " + str(url))
+
+
 # """
 # code {
 #     font-family: 'Microsoft Yahei', '微软雅黑', 'Courier New', Courier, monospace;
@@ -159,3 +166,4 @@ def get_html_style():
 # """
 if __name__ == '__main__':
     print(find_ui('main.ui'))
+    open_url("https://gitcode.net/pythoncr/index")

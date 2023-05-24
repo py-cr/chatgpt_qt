@@ -178,6 +178,9 @@ class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         self.cook_menu_view = CookMenuView(self.tab_food, self.send_message)
         self.tab_food.setLayout(self.cook_menu_view.layout_main)
 
+        # 语音聊天
+        self.voice_chat_view = ComingSoon(self.tab_voice_chat)
+
         self.init_tab_function()
 
         self.txt_main.setReadOnly(True)
