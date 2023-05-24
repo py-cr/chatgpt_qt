@@ -179,34 +179,6 @@
     </item>
    </layout>
   </widget>
-  <widget class="QFrame" name="frame_3">
-   <property name="geometry">
-    <rect>
-     <x>570</x>
-     <y>160</y>
-     <width>10</width>
-     <height>28</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>10</width>
-     <height>0</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>10</width>
-     <height>16777215</height>
-    </size>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-  </widget>
  </widget>
  <resources/>
  <connections/>
