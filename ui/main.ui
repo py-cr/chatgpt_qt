@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>ChatGPT</string>
+   <string>ChatGPT(Python超人)</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QMdiArea" name="mdiArea">
