@@ -47,7 +47,7 @@ https://gitcode.net/pythoncr/chatgpt_qt
 # 安装 Python 库
 ```shell script
 # 先安装基础包
-pip install -i https://pypi.douban.com/simple/ openai 
+pip install -i https://pypi.douban.com/simple/ openai commonmark
 pip install -i https://pypi.douban.com/simple/ pyqt5 pyqt5-tools sip pyqt5.sip PyQtWebEngine-Qt5 PyQtWebEngine
 ```
 
