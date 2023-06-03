@@ -133,6 +133,9 @@
           <property name="leftMargin">
            <number>7</number>
           </property>
+          <property name="bottomMargin">
+           <number>3</number>
+          </property>
           <item>
            <widget class="QCheckBox" name="chk_auto_wrap">
             <property name="text">
@@ -140,6 +143,23 @@
             </property>
             <property name="checked">
              <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string> 代码样式：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="cmb_style">
+            <property name="minimumSize">
+             <size>
+              <width>150</width>
+              <height>0</height>
+             </size>
             </property>
            </widget>
           </item>

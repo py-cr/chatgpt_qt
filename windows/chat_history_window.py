@@ -26,6 +26,7 @@ from db.db_ops import SessionOp
 from db.db_utils import get_timestamp_str
 from db.entities import History
 from db.entities import Session
+from db.entities.session_setting import SessionSetting
 
 
 class ChatHistoryWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
@@ -56,6 +57,7 @@ class ChatHistoryWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         self.session_id = session_id
         session: Session = SessionOp.select(session_id, Session)
         self.session = session
+        self.session_settings = SessionSetting(self.session.settings)
         if is_empty(title):
             if session is not None:
                 subject = session.subject
@@ -90,17 +92,41 @@ class ChatHistoryWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         layout_left.addWidget(self.txt_main)
         layout_left.setSpacing(0)
         self.txt_main.data_bridge.required_histories = self.required_histories
-        self.txt_main.browser.loadFinished.connect(self.loadFinished)
+        self.txt_main.data_bridge.supported_styles = self.supported_styles
 
         self.chk_auto_wrap.clicked.connect(self.auto_wrap)
 
     def required_histories(self, history_id):
         required_histories_for_win(self, history_id)
 
-    def loadFinished(self, bool):
-        if bool:
-            # 初始化历史记录，等待继续聊天，需要等浏览器网页加载完成后，再加载历史消息
-            self.init_history_messages(self.read_part_data)
+    def supported_styles(self, style_names):
+        self.cmb_style.addItem("默认", "Default")
+        style_names = style_names.split("\n")
+        for style_name in style_names:
+            if not is_empty(style_name):
+                self.cmb_style.addItem(style_name, style_name)
+
+        self.cmb_style.currentIndexChanged.connect(self.chat_view_style_changed)
+
+        code_style = self.session_settings.code_style
+        if code_style != "Default":
+            for i in range(self.cmb_style.count()):
+                if code_style == self.cmb_style.itemText(i):
+                    self.cmb_style.setCurrentIndex(i)
+                    break
+            # self.txt_main.changeStyle(code_style)
+
+        # 初始化历史记录，等待继续聊天，需要等浏览器网页加载完成后，再加载历史消息
+        self.init_history_messages(self.read_part_data)
+
+    # def loadFinished(self, bool):
+    #     if bool:
+    #         # 初始化历史记录，等待继续聊天，需要等浏览器网页加载完成后，再加载历史消息
+    #         self.init_history_messages(self.read_part_data)
+
+    def chat_view_style_changed(self):
+        styleName = self.cmb_style.itemData(self.cmb_style.currentIndex())
+        self.txt_main.changeStyle(styleName)
 
     def window_id(self):
         return f"ChatHistoryWindow_{self.session_id}"
