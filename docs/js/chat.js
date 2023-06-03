@@ -64,7 +64,7 @@ function buildTitleElement(hisId, icon, title, color, itemClass, hidden) {
     id_index = hisId;
     icon = "../images/" + icon;
     titleSpan = "<span>" + title + "</span>";
-    titleSpan = "<span title='History_id=" + hisId + "'>" + title + "</span>"; // TODO:保留代码（调试用）
+    // titleSpan = "<span title='History_id=" + hisId + "'>" + title + "</span>"; // TODO:保留代码（调试用）
 
     if ('r-item' == itemClass) {
         titleDiv = "<div id='title_" + id_index + "' class='title' style='color:" + color + "'>" + titleSpan + "<img src='" + icon + "'/></div>";
