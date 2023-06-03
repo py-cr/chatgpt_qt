@@ -105,7 +105,7 @@ class MainWindow(QMainWindow, UiMixin):
         """
         self.action_win_min.setVisible(False)
         self.action_new_chat.triggered.connect(self.new_chat)
-        # self.action_chatbots.triggered.connect(self.open_coming_soon)
+        self.action_chatbots.triggered.connect(self.open_coming_soon)
         self.action_chat_history.triggered.connect(self.open_chat_history)
         self.action_exit.triggered.connect(self.quit)
         self.action_openai_setting.triggered.connect(self.openai_setting)
