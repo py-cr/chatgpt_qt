@@ -2,11 +2,10 @@
 # title           :chat_session.py
 # description     :聊天会话
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
-from common.app_events import AppEvents
 
 # Define the ChatSession class  定义ChatSession类
 from common.openai_chatbot import OpenAiChatbot
@@ -106,12 +105,6 @@ if __name__ == '__main__':
 
     # Send a message to the ChatSession object and get a reply  向ChatSession对象发送消息并获取回复
     reply = session.send_message("你好，1+1等于几？")
-
-    # Print the reply  打印回复
-    # print("\nreply\n", reply)
-
-    # Print the chat history  打印聊天历史记录
-    # print("\nchat_history\n", session.chat_history)
 
     # Send another message to the ChatSession object and get a reply  向ChatSession对象发送另一条消息并获取回复
     reply = session.send_message("我刚才问你什么问题？")

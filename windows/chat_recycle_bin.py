@@ -2,11 +2,10 @@
 # title           :chat_recycle_bin.py
 # description     :聊天回收站窗口
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
-
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QFont
@@ -15,7 +14,7 @@ from PyQt5.QtWidgets import QMdiSubWindow
 from PyQt5.QtWidgets import QMessageBox, QAbstractItemView
 from PyQt5.uic import loadUi
 
-from common.chat_utils import MSG_HISTORY_RECORD_SO_MUCH, CONTENT_SIZE_SO_MUCH
+from common.chat_utils import CONTENT_SIZE_SO_MUCH
 from common.mdi_window_mixin import MdiWindowMixin
 from common.message_box import MessageBox
 from common.str_utils import is_empty

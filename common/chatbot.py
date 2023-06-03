@@ -2,7 +2,7 @@
 # title           :chatbot.py
 # description     :聊天机器人基类
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================

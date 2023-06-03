@@ -2,11 +2,10 @@
 # title           :session_window.py
 # description     :支持会话聊天的窗口
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
-from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QMdiSubWindow
 
 from common.mdi_window_mixin import MdiWindowMixin

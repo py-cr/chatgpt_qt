@@ -2,20 +2,20 @@
 # title           :tab_input_view.py
 # description     :Tab输入视图控件基类
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
-from PyQt5.uic import loadUi
-from PyQt5.QtWidgets import QAction, QMenu, QPushButton
-from PyQt5.QtCore import pyqtSignal, QObject
-from PyQt5.QtGui import QIcon, QBrush, QPalette, QPixmap, QCloseEvent
-from PyQt5.QtWidgets import QWidget, QMessageBox, QMdiSubWindow, QVBoxLayout, QHBoxLayout, QBoxLayout, QStatusBar
-from PyQt5.QtWidgets import QWidget, QMainWindow, QApplication, QHBoxLayout, QBoxLayout, QVBoxLayout
-from common.ui_mixin import UiMixin
 import os
 import sys
 
+from PyQt5.QtCore import QObject
+from PyQt5.QtWidgets import QMenu
+from PyQt5.QtWidgets import QStatusBar
+from PyQt5.QtWidgets import QWidget, QHBoxLayout, QBoxLayout, QVBoxLayout
+from PyQt5.uic import loadUi
+
+from common.ui_mixin import UiMixin
 from common.ui_utils import find_ui
 from windows.session_window import SessionWindow
 

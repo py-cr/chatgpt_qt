@@ -2,28 +2,19 @@
 # title           :cook_menu_view.py
 # description     :烹饪菜单视图控件
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
-from controls.tab_input_view import TabInputView
-from PyQt5.QtGui import QIcon, QPixmap, QPainter, QFont, QTextCursor
-from common.app_events import AppEvents
-from common.combo_box_utils import select_by_text
-from common.json_utils import to_json_items
-# from common.openai_libs import OpenAi
-from common.ui_mixin import UiMixin
-from common.mdi_window_mixin import MdiWindowMixin
-from common.ui_utils import find_ui, find_image, find_icon, set_icon, get_html_style
-from common.chat_utils import build_my_message, build_openai_message
 from common.str_utils import is_empty
-from common.message_box import MessageBox
+from controls.tab_input_view import TabInputView
 
 
 class CookMenuView(TabInputView):
     """
     烹饪菜单视图控件（Tab页签功能）
     """
+
     def __init__(self, parent, send_message):
         super(CookMenuView, self).__init__(parent)
 

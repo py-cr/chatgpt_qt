@@ -2,7 +2,7 @@
 # title           :chatgpt_main.py
 # description     :ChatGPT程序入口
 # author          :Python超人
-# date            :2022-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
@@ -35,9 +35,9 @@ if __name__ == '__main__':
     app.setFont(font)
 
     window = MainWindow()
-    window.setGeometry(191, 143, 1538, 830)  # 设置窗口位置和宽高大小
+    # window.setGeometry(191, 143, 1538, 830)  # 设置窗口位置和宽高大小
     # window.resize(1600, 900)  # 设置窗口宽高大小
-    window.show()
-    # window.showMaximized()
+    # window.show()
+    window.showMaximized()
 
     sys.exit(app.exec_())

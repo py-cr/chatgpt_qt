@@ -6,7 +6,7 @@
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
-from PyQt5.QtCore import QLocale, QSize
+from PyQt5.QtCore import QLocale
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMessageBox, QApplication
 
@@ -15,6 +15,7 @@ class MessageBox:
     """
     消息框工具类
     """
+
     def __init__(self):
         pass
 

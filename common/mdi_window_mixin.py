@@ -2,15 +2,14 @@
 # title           :mdi_window_mixin.py
 # description     :MdiWindowMixin
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
-from PyQt5.QtWidgets import QAction, QMenu, QPushButton
-from PyQt5.QtCore import pyqtSignal, QObject
-from PyQt5.QtGui import QIcon, QBrush, QPalette, QPixmap, QCloseEvent
-from PyQt5.QtWidgets import QWidget, QMessageBox, QMdiSubWindow, QVBoxLayout, QHBoxLayout, QBoxLayout, QStatusBar
-from common.ui_utils import find_ui, find_image, find_icon, set_icon
+from PyQt5.QtCore import QObject
+from PyQt5.QtWidgets import QMenu
+from PyQt5.QtWidgets import QWidget, QMdiSubWindow, QVBoxLayout, QHBoxLayout, QBoxLayout, QStatusBar
+
 from common.session_events import SessionEvents
 
 

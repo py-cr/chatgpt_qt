@@ -2,12 +2,12 @@
 # title           :session_op.py
 # description     :聊天会话数据库操作类
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
-from db.db_utils import execute_ddl, execute_sql, insert_return_id, get_timestamp, select_sql
 from common.str_utils import is_empty
+from db.db_utils import execute_ddl, execute_sql, insert_return_id, get_timestamp, select_sql
 
 
 class SessionOp:

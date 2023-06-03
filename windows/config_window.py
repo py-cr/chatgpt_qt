@@ -2,15 +2,15 @@
 # title           :config_window.py
 # description     :配置窗口
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
 from PyQt5.QtCore import Qt, QItemSelectionModel
+from PyQt5.QtGui import QColor, QPalette
 from PyQt5.QtSql import QSqlDatabase, QSqlTableModel
-from PyQt5.QtWidgets import QMessageBox, QMdiSubWindow, QAbstractItemView
+from PyQt5.QtWidgets import QMessageBox, QMdiSubWindow
 from PyQt5.QtWidgets import QToolBar, QStyledItemDelegate, QLineEdit
-from PyQt5.QtGui import QStandardItemModel, QStandardItem, QFont, QColor, QPalette
 from PyQt5.uic import loadUi
 
 from common.app_config import DB_NAME
@@ -139,7 +139,6 @@ class ConfigWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         self.model.setHeaderData(3, Qt.Horizontal, col_names[1])
         self.model.setHeaderData(4, Qt.Horizontal, col_names[2])
         self.model.setHeaderData(5, Qt.Horizontal, 'Deleted')
-
 
         delegate = ConfigWindowStyledItemDelegate(self.model, callback=self.update_button_status)
         self.tableView.setItemDelegate(delegate)

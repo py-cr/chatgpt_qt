@@ -2,21 +2,21 @@
 # title           :openai_chatbot.py
 # description     :OpenAi聊天机器人
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
-from common.chatbot import Chatbot
-from db.db_ops import ConfigOp, SessionOp, HistoryOp
-from db.entities import Session, History
-from common.str_utils import is_empty
-from common.message_box import MessageBox
-import openai
-import os
 import json
-import requests
+import os
 import traceback
+
+import openai
+import requests
+
+from common.chatbot import Chatbot
+from common.str_utils import is_empty
 from common.ui_utils import find_file
+from db.db_ops import ConfigOp
 
 # TIMEOUT_BOT_MSG = '[Local Message] Request timeout. Network error. Please check proxy settings' + \
 #                   '网络错误，检查代理服务器是否可用，以及代理设置的格式是否正确，格式须是[协议]://[地址]:[端口]，缺一不可。'

@@ -6,12 +6,13 @@
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
+import os
 import sqlite3
+
 import pandas as pd
 
 from common.app_config import DB_NAME
 from common.ui_utils import find_file
-import os
 
 
 class SqliteExecutor:
@@ -100,6 +101,5 @@ class SqliteExecutor:
 
 
 if __name__ == '__main__':
-
     executor = SqliteExecutor(f"../data/{DB_NAME}")
     # executor.create_table()

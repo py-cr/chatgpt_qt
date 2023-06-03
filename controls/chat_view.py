@@ -2,26 +2,23 @@
 # title           :chat_view.py
 # description     :聊天视图Web控件
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
-from PyQt5.uic import loadUi
-from PyQt5.QtWidgets import QAction, QMenu, QPushButton, QTextEdit
-from PyQt5.QtCore import pyqtSignal, QObject, pyqtSlot, Qt
-from PyQt5.QtGui import QIcon, QBrush, QPalette, QPixmap, QCloseEvent, QTextCursor
-from PyQt5.QtWidgets import QWidget, QMessageBox, QMdiSubWindow, QVBoxLayout, QHBoxLayout, QBoxLayout, QStatusBar
-from PyQt5.QtWidgets import QWidget, QGraphicsView, QGraphicsScene, QHBoxLayout, QBoxLayout, QVBoxLayout, QFrame
-from common.ui_mixin import UiMixin
-import os
-import sys
 import json
-from common.ui_utils import find_ui, find_file, find_image
-from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage, QWebEngineSettings
-from PyQt5.QtWebChannel import QWebChannel
-from PyQt5.QtCore import QUrl
+import os
 
 from PyQt5 import QtCore
+from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import Qt
+from PyQt5.QtWebChannel import QWebChannel
+from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings
+from PyQt5.QtWidgets import QTextEdit
+from PyQt5.QtWidgets import QWidget, QHBoxLayout
+
+from common.ui_mixin import UiMixin
+from common.ui_utils import find_file
 
 
 class DataBridge(QtCore.QObject):

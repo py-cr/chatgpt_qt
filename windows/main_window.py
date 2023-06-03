@@ -2,11 +2,10 @@
 # title           :main_window.py
 # description     :主窗口
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
-import os
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QCloseEvent
@@ -14,16 +13,13 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, QMenu, QMdiArea
 from PyQt5.QtWidgets import QMessageBox, QMdiSubWindow, QAbstractItemView
 from PyQt5.uic import loadUi
 
-from common.str_utils import is_empty
-from common.app_config import DB_NAME
-from common.chat_utils import MSG_HISTORY_RECORD_SO_MUCH, CONTENT_SIZE_SO_MUCH
+from common.chat_utils import CONTENT_SIZE_SO_MUCH
 from common.message_box import MessageBox
+from common.str_utils import is_empty
 from common.ui_mixin import UiMixin
 from common.ui_utils import find_ui, open_url
-from db.db_ops import ConfigOp
-from db.db_ops import HistoryOp
-from db.db_ops import SessionOp
 from db.db_init import db_version_check
+from db.db_ops import SessionOp
 from db.entities.consts import CFG_KEY_AI_ROLE, CFG_KEY_CHAT_CATEGORY, CFG_KEY_TAB_FUNCTION
 from windows.button_function_window import ButtonFunctionWindow
 from windows.chat_recycle_bin import ChatRecycleBin
@@ -63,17 +59,17 @@ class MainWindow(QMainWindow, UiMixin):
     #     :return:
     #     """
     #     db_check_init()
-        # db_file = os.path.join("data", DB_NAME)
-        # if not os.path.exists(db_file):
-        #     # 如果数据库不存在，则进行初始化
-        #     ConfigOp.create_table()
-        #     SessionOp.create_table()
-        #     HistoryOp.create_table()
-        #
-        #     ConfigOp.init_ai_roles()
-        #     ConfigOp.init_button_funcs()
-        #     ConfigOp.init_categories()
-        #     ConfigOp.init_tab_funcs()
+    # db_file = os.path.join("data", DB_NAME)
+    # if not os.path.exists(db_file):
+    #     # 如果数据库不存在，则进行初始化
+    #     ConfigOp.create_table()
+    #     SessionOp.create_table()
+    #     HistoryOp.create_table()
+    #
+    #     ConfigOp.init_ai_roles()
+    #     ConfigOp.init_button_funcs()
+    #     ConfigOp.init_categories()
+    #     ConfigOp.init_tab_funcs()
 
     def init_icons(self):
         self.set_icons([

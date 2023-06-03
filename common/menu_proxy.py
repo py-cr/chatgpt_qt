@@ -2,18 +2,13 @@
 # title           :menu_proxy.py
 # description     :MenuProxy
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import QApplication, QMainWindow, QStyleFactory, QFileDialog, QPushButton, QAction
 import PyQt5.QtCore as QtCore
-from PyQt5.QtCore import Qt
 
 from PyQt5 import QtWidgets, QtGui
-from PyQt5.uic import loadUi
-from PyQt5.QtCore import QTranslator, QLocale
 
 
 class MenuProxy(QtWidgets.QProxyStyle):

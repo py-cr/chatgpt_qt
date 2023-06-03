@@ -2,12 +2,13 @@
 # title           :session_setting.py
 # description     :聊天会话设置
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
-from common.str_utils import is_empty
 import json
+
+from common.str_utils import is_empty
 
 
 class SessionSetting:

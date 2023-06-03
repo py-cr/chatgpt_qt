@@ -7,10 +7,9 @@
 # python_version  :3.8
 # ==============================================================================
 import os
-import time
-from PyQt5.QtCore import pyqtSignal, QObject, QThread
-from PyQt5.QtGui import QIcon, QTextCursor
-from PyQt5.QtWidgets import QApplication, QMainWindow, QStyleFactory, QFileDialog, QPushButton, QAction, QMenu
+
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QAction, QMenu
 
 
 def find_file(file_name, parent_dir, raise_exception=True):

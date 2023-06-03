@@ -2,12 +2,11 @@
 # title           :douyin_video_view.py
 # description     :抖音短视频帮助视图控件
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
 
-from common.app_events import AppEvents
 from controls.tab_input_view import TabInputView
 
 

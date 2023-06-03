@@ -2,16 +2,12 @@
 # title           :function_view.py
 # description     :功能视图控件
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
+from PyQt5.QtWidgets import QWidget
 from PyQt5.uic import loadUi
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import QWidget, QComboBox, QMainWindow, QApplication, QHBoxLayout, QBoxLayout, QVBoxLayout
-from PyQt5.QtCore import Qt
-import os
-import sys
 
 from common.ui_utils import find_ui
 

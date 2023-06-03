@@ -6,10 +6,11 @@
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
-from PyQt5.QtGui import QStandardItemModel, QStandardItem
-from PyQt5.QtWidgets import QTableView, QCheckBox, QVBoxLayout, QApplication, QWidget, QHeaderView, QComboBox
-from PyQt5.QtCore import Qt
 import sys
+
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QStandardItemModel, QStandardItem
+from PyQt5.QtWidgets import QTableView, QVBoxLayout, QApplication, QWidget, QHeaderView
 
 
 class TableDataLoader(QWidget):

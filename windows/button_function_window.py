@@ -2,13 +2,12 @@
 # title           :button_function_window.py
 # description     :按钮功能配置窗口
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
 import json
-from PyQt5.QtCore import Qt, QItemSelectionModel
-from PyQt5.QtWidgets import QAbstractItemView
+
 from common.str_utils import is_empty
 from common.ui_mixin import UiMixin
 from controls.function_view import FunctionView, FUNCTION_SAMPLE_TEXT

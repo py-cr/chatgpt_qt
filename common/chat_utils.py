@@ -2,7 +2,7 @@
 # title           :chat_utils.py
 # description     :聊天相关工具类
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
@@ -227,23 +227,7 @@ def build_chat_message(who, message, icon=None, color=None):
         icon_html = ""
     if color is None:
         color = "black"
-    # import commonmark
-    # message = message.replace("\n\n\n", "\n")
-    # message = message.replace("\n\n", "\n")
-    # parser = commonmark.Parser()
-    # ast = parser.parse(message)
-    # renderer = commonmark.HtmlRenderer()
-    # message = renderer.render(ast)
-
     message = message_to_html(message)
-
-    # from markdown import markdown
-    # # message = message.replace("\n", "\n\n")
-    # message = markdown(message)
-    # # message = message.replace("\n", "<br>")
-    # # message = message.replace("\r\n", "\n")
-    # # message = message.replace("\n\n", "<br>")
-    # # message = message.replace("\n", "<br>")
 
     message = f"""<div style='color:{color}'>{message}</div>"""
     # print(icon_html)

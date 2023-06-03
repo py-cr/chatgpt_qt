@@ -6,7 +6,6 @@
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
-import os
 
 
 def is_empty(s: str):

@@ -2,23 +2,22 @@
 # title           :chat_history_window.py
 # description     :聊天历史查看窗口
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QTextCursor
 from PyQt5.QtWidgets import QMdiSubWindow, QApplication, QVBoxLayout
 from PyQt5.QtWidgets import QTextEdit, QWidget
 from PyQt5.uic import loadUi
 
-from common.chat_utils import build_my_message, build_openai_message, message_to_html, required_histories_for_win, \
+from common.chat_utils import required_histories_for_win, \
     get_history_chat_info
 from common.mdi_window_mixin import MdiWindowMixin
 from common.str_utils import is_empty
 from common.ui_mixin import UiMixin
-from common.ui_utils import find_ui, get_html_style
+from common.ui_utils import find_ui
 from controls.chat_view import ChatView
 from db.db_ops import ConfigOp
 from db.db_ops import HistoryOp

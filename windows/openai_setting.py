@@ -2,7 +2,7 @@
 # title           :openai_setting.py
 # description     :OpenAI设置窗口
 # author          :Python超人
-# date            :2022-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
@@ -11,7 +11,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QRegExpValidator
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QApplication
 from PyQt5.uic import loadUi
-from common.str_utils import is_empty
+
 from common.chat_session import ChatSession
 from common.message_box import MessageBox
 from common.ui_mixin import UiMixin

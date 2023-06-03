@@ -2,25 +2,23 @@
 # title           :chat_window.py
 # description     :聊天窗口
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
 from PyQt5.QtCore import Qt, QEvent, pyqtSignal, QThread
-from PyQt5.QtGui import QTextCursor, QMouseEvent
+from PyQt5.QtGui import QMouseEvent
 from PyQt5.QtWidgets import QApplication, QPushButton, QTextEdit, QHBoxLayout
-from PyQt5.QtWidgets import QMdiSubWindow, QWidget, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QVBoxLayout
 from PyQt5.uic import loadUi
-import json
+
 from common.app_events import AppEvents
-from common.chat_utils import build_my_message, build_openai_message, plain_text_to_html, build_chat_title, \
-    message_total_size, get_button_functions, message_to_html, get_history_chat_info, required_histories_for_win
+from common.chat_utils import message_total_size, get_button_functions, message_to_html, get_history_chat_info, \
+    required_histories_for_win
 from common.control_init import init_ai_model_combo, init_ai_role_combo, init_categories_combo
-from common.mdi_window_mixin import MdiWindowMixin
 from common.message_box import MessageBox
 from common.str_utils import is_empty
-from common.ui_mixin import UiMixin
-from common.ui_utils import find_ui, get_html_style
+from common.ui_utils import find_ui
 from controls.chat_view import ChatView
 from controls.coming_soon import ComingSoon
 from controls.cook_menu_view import CookMenuView
@@ -140,14 +138,9 @@ class ChatWindow(SessionWindow):
         """
         configs = ConfigOp.get_configs(CFG_KEY_TAB_FUNCTION)
         tabs_text = [i.cfg_key for i in configs]
-        # self.tab_main.children()[0].children()[4] self.tab_food
-        # self.tab_main.widget(i).objectName()
-        # print(self.tab_main.count())
         for i in range(self.tab_main.count() - 1, 0, -1):
             if self.tab_main.tabText(i) not in tabs_text:
-                # self.tab_main.widget(i).hide()
                 self.tab_main.removeTab(i)
-        # print(self.tab_main.count())
 
     def init_controls(self):
         """
@@ -226,19 +219,6 @@ class ChatWindow(SessionWindow):
 
         # 初始化历史记录，等待继续聊天，需要等浏览器网页加载完成后，再加载历史消息
         self.init_history_messages(self.read_part_data)
-
-    # def loadFinished(self, bool):
-    #     if bool:
-    #         code_style = self.session_settings.code_style
-    #         if code_style != "Default":
-    #             for i in range(self.cmb_style.count()):
-    #                 if code_style == self.cmb_style.itemText(i):
-    #                     self.cmb_style.setCurrentIndex(i)
-    #                     break
-    #             # self.txt_main.changeStyle(code_style)
-    #
-    #         # 初始化历史记录，等待继续聊天，需要等浏览器网页加载完成后，再加载历史消息
-    #         self.init_history_messages(self.read_part_data)
 
     def stop_chat(self):
         """

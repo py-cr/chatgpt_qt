@@ -2,15 +2,14 @@
 # title           :chat_window_worker.py
 # description     :聊天窗口线程访问worker
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
 
 from PyQt5.QtCore import pyqtSignal, QObject
-from PyQt5.QtCore import Qt
-from common.app_events import AppEvents
-from common.chat_utils import build_chat_title, plain_text_to_html, ERR_MSG_MAP, message_to_html
+
+from common.chat_utils import ERR_MSG_MAP, message_to_html
 from common.openai_chatbot import OpenAiChatbot
 from db.db_ops import HistoryOp
 from windows.chat_window import ChatWindow
@@ -37,10 +36,10 @@ class ChatWindowWorker(QObject):
 
     def _do(self):
         his_id = HistoryOp.insert(role="assistant",
-                         content='',
-                         content_type="text",
-                         session_id=self.ui.session_id,
-                         status=0)
+                                  content='',
+                                  content_type="text",
+                                  session_id=self.ui.session_id,
+                                  status=0)
 
         self.appendTitleSignal.emit(his_id, True, "icon_green.png", "OpenAi", "green")
         self.updateHtmlSignal.emit('<div class="loading"></div>')

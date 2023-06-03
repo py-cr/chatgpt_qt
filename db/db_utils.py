@@ -2,12 +2,13 @@
 # title           :db_utils.py
 # description     :数据库工具类
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
-from common.sqlite_executor import SqliteExecutor
 import datetime
+
+from common.sqlite_executor import SqliteExecutor
 
 
 def get_timestamp(ts=None):

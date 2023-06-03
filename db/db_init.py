@@ -2,15 +2,13 @@
 # title           :db_utils.py
 # description     :数据库工具类
 # author          :Python超人
-# date            :2023-5-1
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
-from common.app_config import DB_NAME
-from common.sqlite_executor import SqliteExecutor
-import datetime
 import os
 
+from common.app_config import DB_NAME
 from db.db_ops import ConfigOp, SessionOp, HistoryOp
 
 CURRENT_DB_VERSION = "1.0"

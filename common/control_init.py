@@ -1,3 +1,11 @@
+# -*- coding:utf-8 -*-
+# title           :control_init.py
+# description     :控件初始化工具类
+# author          :Python超人
+# date            :2023-6-3
+# link            :https://gitcode.net/pythoncr/
+# python_version  :3.8
+# ==============================================================================
 from common.openai_chatbot import OpenAiChatbot
 from PyQt5.QtWidgets import QComboBox
 from db.db_ops import SessionOp, ConfigOp

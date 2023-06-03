@@ -6,11 +6,12 @@
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
+from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtWidgets import QAction, QMenu
-from PyQt5.QtGui import QFont, QIcon, QBrush, QPalette, QPixmap, QCloseEvent
-from PyQt5.QtWidgets import QPlainTextEdit, QVBoxLayout, QWidget, QLayout, QLayoutItem, QWidgetItem
-from common.ui_utils import find_ui, find_image, find_icon, set_icon
+from PyQt5.QtWidgets import QLayout, QLayoutItem, QWidgetItem
+
 from common.message_box import MessageBox
+from common.ui_utils import find_icon, set_icon
 
 
 class UiMixin:
