@@ -15,7 +15,7 @@ from PyQt5.QtWidgets import QMdiSubWindow
 from PyQt5.QtWidgets import QMessageBox, QAbstractItemView
 from PyQt5.uic import loadUi
 
-from common.chat_utils import MSG_HISTORY_RECORD_SO_MUCH
+from common.chat_utils import MSG_HISTORY_RECORD_SO_MUCH, CONTENT_SIZE_SO_MUCH
 from common.mdi_window_mixin import MdiWindowMixin
 from common.message_box import MessageBox
 from common.str_utils import is_empty
@@ -198,15 +198,15 @@ class ChatRecycleBin(QMdiSubWindow, UiMixin, MdiWindowMixin):
             window.showMaximized()
             return
         read_part_data = False
-        if content_size > 200000:
+        if content_size > CONTENT_SIZE_SO_MUCH:
             QApplication.restoreOverrideCursor()
-            reply = MessageBox.question(self, '历史数据较多', MSG_HISTORY_RECORD_SO_MUCH,
-                                        buttons=QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
-                                        default_button=QMessageBox.Yes)
-            if reply == QMessageBox.Cancel:
-                return
-            elif reply == QMessageBox.Yes:
-                read_part_data = True
+            # reply = MessageBox.question(self, '历史数据较多', MSG_HISTORY_RECORD_SO_MUCH,
+            #                             buttons=QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
+            #                             default_button=QMessageBox.Yes)
+            # if reply == QMessageBox.Cancel:
+            #     return
+            # elif reply == QMessageBox.Yes:
+            read_part_data = True
 
             QApplication.setOverrideCursor(Qt.WaitCursor)
 

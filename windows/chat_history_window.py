@@ -9,15 +9,17 @@
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QTextCursor
-from PyQt5.QtWidgets import QMdiSubWindow
-from PyQt5.QtWidgets import QTextEdit
+from PyQt5.QtWidgets import QMdiSubWindow, QApplication, QVBoxLayout
+from PyQt5.QtWidgets import QTextEdit, QWidget
 from PyQt5.uic import loadUi
 
-from common.chat_utils import build_my_message, build_openai_message
+from common.chat_utils import build_my_message, build_openai_message, message_to_html, required_histories_for_win, \
+    get_history_chat_info
 from common.mdi_window_mixin import MdiWindowMixin
 from common.str_utils import is_empty
 from common.ui_mixin import UiMixin
 from common.ui_utils import find_ui, get_html_style
+from controls.chat_view import ChatView
 from db.db_ops import ConfigOp
 from db.db_ops import HistoryOp
 from db.db_ops import SessionOp
@@ -33,6 +35,7 @@ class ChatHistoryWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
 
     def __init__(self, session_id, title="", read_part_data=False):
         super().__init__()
+        self.read_part_data = read_part_data
         # 从 .ui 文件加载 UI
         loadUi(find_ui("ui/chat_history.ui"), self)
         self.chat_history = []
@@ -40,8 +43,7 @@ class ChatHistoryWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         self.load_session(session_id, title)
         # 初始化控件
         self.init_controls()
-        # 初始化历史记录，等待继续聊天
-        self.init_history_messages(read_part_data)
+
         self.setWindowIcon(self.default_icon())
 
     def load_session(self, session_id, title):
@@ -78,11 +80,27 @@ class ChatHistoryWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         self.dock_fill()
         self.init_categories()
 
-        self.txt_main.setReadOnly(True)
-        self.txt_main.setFont(self.default_font())
-        self.txt_main.setStyleSheet(get_html_style())
+        layout_left: QVBoxLayout = self.layout_left
+        widget: QWidget = self.txt_main.parent()
+
+        self.txt_main.setParent(None)
+        widget.setContentsMargins(0, 0, 0, 0)
+
+        self.txt_main = ChatView(self)
+        layout_left.addWidget(self.txt_main)
+        layout_left.setSpacing(0)
+        self.txt_main.data_bridge.required_histories = self.required_histories
+        self.txt_main.browser.loadFinished.connect(self.loadFinished)
 
         self.chk_auto_wrap.clicked.connect(self.auto_wrap)
+
+    def required_histories(self, history_id):
+        required_histories_for_win(self, history_id)
+
+    def loadFinished(self, bool):
+        if bool:
+            # 初始化历史记录，等待继续聊天，需要等浏览器网页加载完成后，再加载历史消息
+            self.init_history_messages(self.read_part_data)
 
     def window_id(self):
         return f"ChatHistoryWindow_{self.session_id}"
@@ -93,7 +111,9 @@ class ChatHistoryWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         :param read_part_data: 是否读取部分消息
         :return:
         """
-        histories = HistoryOp.select_by_session_id(self.session_id, order_by="order_no, _id", entity_cls=History)
+        self.all_histories = HistoryOp.select_by_session_id(self.session_id, order_by="order_no, _id",
+                                                            entity_cls=History)
+        histories = self.all_histories
         if len(histories) == 0:
             self.auto_wrap()
             return
@@ -109,24 +129,32 @@ class ChatHistoryWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
                 if total_size > msg_context_size * 1000:
                     if i < his_len - 1:
                         histories = histories[i + 1:]
+                        self.history_point_index = i
                         break
 
-        html = ""
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+
         for history in histories:
             role = history.role
             content = history.content
-            content_len = history.content_len
+            content_len = len(content)  # .content_len
+            if content_len == 0:
+                continue
             status = history.status
             self.chat_history.append((status, {"role": role, "content": content}, content_len))
-            # AppEvents.on_chat_history_changed()
-            if role == "user":
-                html += build_my_message(content, role_name=history.role_name)
-            elif role == "assistant":
-                html += build_openai_message(content, role_name=history.role_name)
 
-        self.txt_main.insertHtml(html + "<br>")
-        self.txt_main.moveCursor(QTextCursor.End)
+            is_left = history.role == "assistant"
+            icon_name, role_name, color_name, html = get_history_chat_info(history)
+
+            if is_left:
+                self.txt_main.left_title(history._id, icon_name, role_name, color_name)
+            else:
+                self.txt_main.right_title(history._id, icon_name, role_name, color_name)
+
+            self.txt_main.update_html(html, True)
+
         self.auto_wrap()
+        QApplication.restoreOverrideCursor()
 
     def init_categories(self):
         """
@@ -151,6 +179,5 @@ class ChatHistoryWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
     def auto_wrap(self):
         if self.chk_auto_wrap.checkState() == Qt.Checked:
             self.txt_main.setLineWrapMode(QTextEdit.WidgetWidth)
-            self.txt_main.moveCursor(QTextCursor.End)
         else:
             self.txt_main.setLineWrapMode(QTextEdit.NoWrap)

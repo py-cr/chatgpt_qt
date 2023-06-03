@@ -1,0 +1,209 @@
+body {
+    position: relative;
+    /*font-family: Consolas, "SF Pro Display", Roboto, Noto, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;*/
+    font-family: Consolas, "Microsoft Yahei", "Clear Sans", "Helvetica Neue", Helvetica, Arial, 'Segoe UI Emoji', sans-serif;
+    font-size: 16px;
+    /*line-height: 1.57142857;*/
+    /*background-color: #f5f6f7;*/
+    /*color: #333;*/
+    /*min-height: 100%;*/
+}
+/*::selection {*/
+/*    background:lightblue;*/
+/*    color:#000;*/
+/*}*/
+/*::-moz-selection {*/
+/*    background:lightblue;*/
+/*    color:#000;*/
+/*}*/
+
+/*code::selection { background:deeppink; color:lightgreen; }*/
+/*code::-moz-selection { background:deeppink; color:lightgreen; }*/
+/*code::-webkit-selection { background:deeppink; color:lightgreen;}*/
+
+/*pre code::selection { background:deeppink; color:lightgreen; }*/
+/*pre code::-moz-selection { background:deeppink; color:lightgreen; }*/
+/*pre code::-webkit-selection { background:deeppink; color:lightgreen;}*/
+/*html, body {*/
+/*    height: 90%;*/
+/*}*/
+
+div.l-item {
+    background-color: #d7ffdc;
+    border-radius: 6px;
+    /*border: #8ea890 solid 1px;*/
+    padding: 5px 12px 5px 12px;
+    margin: 0px 20px 10px 3px;
+}
+
+div.r-item {
+    background-color: #dcdcff;
+    border-radius: 6px;
+    /*border: #8183ce solid 1px;*/
+    padding: 5px 12px 5px 12px;
+    margin: 0px 3px 10px 30px;
+}
+
+div.r-item div.title {
+    text-align: right;
+    font-size: 17px;
+    margin: 5px 0px 0px 0px;
+    padding: 0px;
+}
+
+div.l-item div.title {
+    font-size: 17px;
+    margin: 5px 0px 0px 0px;
+    padding: 0px;
+}
+
+div.title span {
+    border-radius: 3px;
+    padding: 0px 3px 0px 3px;
+    margin: 5px 6px 0px 6px;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+div.r-item div.title span {
+    border: blue dashed 1px;
+}
+
+div.l-item div.title span {
+    border: darkgreen dashed 1px;
+}
+
+div.r-item div.title img, div.l-item div.title img {
+    vertical-align: middle;
+    margin-top: -5px;
+}
+
+div.content {
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
+pre {
+    word-break: break-all;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+pre, code {
+    border-radius: 5px;
+    margin: 3px;
+    padding: 3px 3px 3px 5px;
+}
+
+code {
+    color: #50e650;
+    background-color: #555555;
+    font-family: Menlo, Monaco, "Courier New", monospace;
+    border-radius: 5px;
+    margin: 3px;
+    padding: 3px 3px 3px 5px;
+    /*text-indent: -8px;*/
+}
+
+pre{
+    background-color: rgba(0,0,0,0.2);
+    margin: 1px;
+    padding: 1px;
+}
+
+/*pre code.language-html {*/
+/*    color: white;*/
+/*    background-color: #555555;*/
+/*    border-radius: 5px;*/
+/*    margin: 3px;*/
+/*    padding: 3px 3px 3px 5px;*/
+/*}*/
+
+/*pre {*/
+/*    padding: 10px 10px 10px 40px;*/
+/*    font-size: 13px;*/
+/*    line-height: 18px;*/
+/*    background-color: #eee;*/
+/*    font-family: "Lucida Console", Consolas, Monaco;*/
+/*    white-space: pre-wrap;*/
+/*    word-break: break-all;*/
+/*    position: relative;*/
+/*    overflow: hidden;*/
+/*}*/
+
+/*pre::before {*/
+/*    content: '01.\A 02.\A 03.\A 04.\A 05.\A 06.\A 07.\A 08.\A 09.\A 10.\A 11.\A 12.\A 13.\A 14.\A 15.\A 16.\A 17.\A 18.\A 19.\A 20.\A 21.\A 22.\A 23.\A 24.\A 25.\A 26.\A 27.\A 28.\A 29.\A 30.\A 31.\A 32.\A 33.\A 34.\A 35.\A 36.\A 37.\A 38.\A 39.\A 40.\A 41.\A 42.\A 43.\A 44.\A 45.\A 46.\A 47.\A 48.\A 49.\A 50.\A 51.\A 52.\A 53.\A 54.\A 55.\A 56.\A 57.\A 58.\A 59.\A 60.\A 61.\A 62.\A 63.\A 64.\A 65.\A 66.\A 67.\A 68.\A 69.\A 70.\A 71.\A 72.\A 73.\A 74.\A 75.\A 76.\A 77.\A 78.\A 79.\A 80.\A 81.\A 82.\A 83.\A 84.\A 85.\A 86.\A 87.\A 88.\A 89.\A 90.\A 91.\A 92.\A 93.\A 94.\A 95.\A 96.\A 97.\A 98.\A 99';*/
+/*    position: absolute;*/
+/*    top: 10px;*/
+/*    bottom: 10px;*/
+/*    left: 0;*/
+/*    text-align: right;*/
+/*    background-color: #fbfbfb;*/
+/*    color: #333;*/
+/*    outline: 100px solid #fbfbfb;*/
+/*    clip: rect(-100px 2em 9999px 0); !* IE9+ *!*/
+/*    clip: rect(-100px 3.5ch 9999px 0);*/
+/*    overflow: hidden;*/
+/*}*/
+
+
+button.copy-code {
+    width: 24px;
+    height: 24px;
+    background-size: 24px 24px;
+    background: url("../images/copy_n.png") no-repeat center center;
+    /*color: white;*/
+    /*background-image: url("../images/page-copy.png");*/
+    /*background-image: url("../images/copy.png");*/
+    border: white solid 0px;
+    margin: 20px 30px 5px 5px;/* 代码中进行调整 */
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 0.7;
+}
+
+button.copy-code:hover{
+    opacity: 1;
+}
+
+button.copy-n{
+    background: url("../images/copy_n.png") no-repeat center center;
+}
+
+button.copy-ok{
+    background: url("../images/copy_ok.png") no-repeat center center;
+}
+
+
+.showMessage {
+    padding: 10px 20px;
+    border-radius: 5px;
+    position: fixed;
+    top: 15%;
+    left: 50%;
+    color: #ffffff;
+    z-index: 999;
+    transform: translate(-50%, 0);
+    /* box-shadow: 5px 5px 3px 4px rgba(0, 0, 0, .4);  */
+    /* box-shadow:水平位置 垂直位置 模糊距离 阴影尺寸（影子大小） 阴影颜色  内/外阴影； */
+    box-shadow: 0 10px 10px rgba(0, 0, 0, .4);
+}
+
+.showMessageSuccess {
+    background-color: #feffdb;
+    border: 1px solid #585f54;
+    color: #000000;
+}
+
+.showMessageError {
+    background-color: #feffdb;
+    border: 1px solid #fde2e2;
+    color: #F76C6C;
+}
+
+.loading {
+    width: 24px;
+    height: 24px;
+    background-size: 20px 20px;
+    background: url("../images/loading.gif") no-repeat center center;
+}

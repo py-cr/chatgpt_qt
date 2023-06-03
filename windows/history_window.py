@@ -40,6 +40,7 @@ class HistoryWindow(QDockWidget, UiMixin):
 
         self.set_icons([self.btn_delete_chat, self.btn_open_chat, self.btn_refresh],
                        ['cross.png', 'comment.png', 'refresh.png'])
+        # bin.png cross.png
 
         # 初始化控件
         self.init_controls()
@@ -103,8 +104,6 @@ class HistoryWindow(QDockWidget, UiMixin):
         """
         self.tabvw_his.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.tabvw_his.setSelectionBehavior(QAbstractItemView.SelectRows)
-        # self.btn_ai_chat_player.setVisible(False)
-        # self.btn_open_ai_chat.setVisible(False)
         self.init_categories()
 
     def window_id(self):
@@ -123,7 +122,7 @@ class HistoryWindow(QDockWidget, UiMixin):
         if is_empty(settings):
             self.open_selected_chat()
         else:
-            self.open_selected_ai_chat()
+            self.open_selected_chat()
 
     def open_chat_by_index(self, index, open_chat=None):
         if open_chat is None:
@@ -155,7 +154,7 @@ class HistoryWindow(QDockWidget, UiMixin):
                     items.append(tabvw_his.itemData(tabvw_his.item(row, i).index())[0])
                 session_ids.append(int(items[3]))
         if len(session_ids) > 0:
-            result = MessageBox.question(self, "确认", "是否删除勾选的聊天记录？")
+            result = MessageBox.question(self, "确认", "是否删除选中的聊天记录，并放入回收站？")
             if result == QMessageBox.Yes:
                 SessionOp.delete_ids(tuple(session_ids))
                 # print(session_ids)

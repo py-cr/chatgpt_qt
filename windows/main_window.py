@@ -14,14 +14,16 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, QMenu, QMdiArea
 from PyQt5.QtWidgets import QMessageBox, QMdiSubWindow, QAbstractItemView
 from PyQt5.uic import loadUi
 
+from common.str_utils import is_empty
 from common.app_config import DB_NAME
-from common.chat_utils import MSG_HISTORY_RECORD_SO_MUCH
+from common.chat_utils import MSG_HISTORY_RECORD_SO_MUCH, CONTENT_SIZE_SO_MUCH
 from common.message_box import MessageBox
 from common.ui_mixin import UiMixin
 from common.ui_utils import find_ui, open_url
 from db.db_ops import ConfigOp
 from db.db_ops import HistoryOp
 from db.db_ops import SessionOp
+from db.db_init import db_version_check
 from db.entities.consts import CFG_KEY_AI_ROLE, CFG_KEY_CHAT_CATEGORY, CFG_KEY_TAB_FUNCTION
 from windows.button_function_window import ButtonFunctionWindow
 from windows.chat_recycle_bin import ChatRecycleBin
@@ -46,45 +48,55 @@ class MainWindow(QMainWindow, UiMixin):
         self.init_icons()
         # 绑定事件
         self.bind_events()
+        # 初始化指令菜单
+        self.init_prompt_menus()
         # 数据库初始化
-        self.db_init()
+        db_version_check()
         # 打开聊天历史
         self.open_chat_history()
+        # 用于窗口排序
+        self.window_sort_list = []
 
-    def db_init(self):
-        """
-        数据库初始化
-        :return:
-        """
-        db_file = os.path.join("data", DB_NAME)
-        if not os.path.exists(db_file):
-            # 如果数据库不存在，则进行初始化
-            ConfigOp.create_table()
-            SessionOp.create_table()
-            HistoryOp.create_table()
-
-            ConfigOp.init_ai_roles()
-            ConfigOp.init_button_funcs()
-            ConfigOp.init_categories()
-            ConfigOp.init_tab_funcs()
+    # def db_init(self):
+    #     """
+    #     数据库初始化
+    #     :return:
+    #     """
+    #     db_check_init()
+        # db_file = os.path.join("data", DB_NAME)
+        # if not os.path.exists(db_file):
+        #     # 如果数据库不存在，则进行初始化
+        #     ConfigOp.create_table()
+        #     SessionOp.create_table()
+        #     HistoryOp.create_table()
+        #
+        #     ConfigOp.init_ai_roles()
+        #     ConfigOp.init_button_funcs()
+        #     ConfigOp.init_categories()
+        #     ConfigOp.init_tab_funcs()
 
     def init_icons(self):
         self.set_icons([
             self.menu_chat, self.action_new_chat, self.action_chat_history, self.action_exit, self.menu_settings,
             self.action_openai_setting, self.action_roles, self.menu_window, self.action_categories,
             self.action_win_cascade, self.action_win_tile, self.action_recycle_bin, self.action_function,
-            self.action_win_min, self.action_win_max, self.action_chatbots, self.action_prompt,
-            self.action_close_others, self.action_close_all_win, self.action_tab_fun, self.action_about, self.menu_help
+            self.action_win_min, self.action_win_max, self.action_chatbots, self.menu_prompt,
+            self.action_close_others, self.action_close_all_win, self.action_close_deleted_win, self.action_tab_fun,
+            self.action_about, self.menu_help, self.action_opensource
         ], [
             "comment.png", "comment.png", "history.png", "sign-out.png", "settings.png",
             "config.png", "brainstorming.png", "windows.png", "category.png",
             "application_cascade.png", "application_tile_horizontal.png", "bin.png", "button-color-circle.png",
             "application-min.png", "application.png", "bubbles3.png", "star.png",
-            "application_delete.png", "application_cascade_delete.png", "tab.png", "star.png", "help.png"
+            "application_delete.png", "application_cascade_delete.png", "application_cascade_delete.png", "tab.png",
+            "icon.png", "help.png", "icon.png"
         ])
 
     def open_about(self):
         open_url("https://gitcode.net/pythoncr/index")
+
+    def open_source(self):
+        open_url("https://gitcode.net/pythoncr/chatgpt_qt.git")
 
     def bind_events(self):
         """
@@ -93,7 +105,7 @@ class MainWindow(QMainWindow, UiMixin):
         """
         self.action_win_min.setVisible(False)
         self.action_new_chat.triggered.connect(self.new_chat)
-        self.action_chatbots.triggered.connect(self.open_coming_soon)
+        # self.action_chatbots.triggered.connect(self.open_coming_soon)
         self.action_chat_history.triggered.connect(self.open_chat_history)
         self.action_exit.triggered.connect(self.quit)
         self.action_openai_setting.triggered.connect(self.openai_setting)
@@ -105,13 +117,58 @@ class MainWindow(QMainWindow, UiMixin):
         self.action_win_tile.triggered.connect(self.sub_win_tile)
         self.action_function.triggered.connect(self.function_settings)
         self.action_categories.triggered.connect(self.categories_settings)
-        self.action_prompt.triggered.connect(self.open_prompt)
+
         self.action_recycle_bin.triggered.connect(self.open_recycle_bin)
         self.action_about.triggered.connect(self.open_about)
+        self.action_opensource.triggered.connect(self.open_source)
 
         self.mdiArea.subWindowActivated.connect(self.handle_subwindow_activated)
         self.action_close_others.triggered.connect(self.close_others_win)
         self.action_close_all_win.triggered.connect(self.close_all_win)
+        self.action_close_deleted_win.triggered.connect(self.close_deleted_windows)
+
+    def init_prompt_menus(self):
+
+        # self.action_prompt.triggered.connect(self.open_prompt)
+        # open_url("https://xinghuo.xfyun.cn/instruction")
+
+        prompt_urls = [
+            ("讯飞星火认知大模型指令集", "https://xinghuo.xfyun.cn/instruction", "fxxh.png"),
+            ("ChatGPT 快捷指令", "https://www.aishort.top/", "aishort.png"),
+            ("ChatGPT 中文调教指南", "https://gitcode.net/pythoncr/awesome-chatgpt-prompts-zh", "git.png"),
+            ("Mr. Ranedeer AI 导师", "https://gitcode.net/pythoncr/Mr.-Ranedeer-AI-Tutor", "git.png"),
+            ("|",),
+            ("Awesome ChatGPT Prompts", "https://prompts.chat/", "brain.png"),
+            ("Mr.-Ranedeer-AI-Tutor", "https://gitcode.net/pythoncr/Mr.-Ranedeer-AI-Tutor", "git.png")
+        ]
+
+        for prompt_item in prompt_urls:
+            def open_prompt_url(url):
+                def inner():
+                    open_url(url)
+
+                return inner
+
+            text = prompt_item[0]
+            if text == "|":
+                prompt_action = QAction(self)
+                prompt_action.setSeparator(True)
+            else:
+                prompt_action = self.createAction(text=text, slot=open_prompt_url(prompt_item[1]))
+
+                if len(prompt_item) > 2:
+                    item_icon = prompt_item[2]
+                else:
+                    item_icon = ""
+
+                if is_empty(item_icon):
+                    item_icon = "star.png"
+
+                self.set_icon(prompt_action, item_icon)
+            # mnu_prompt.actionGroup().addAction()
+            self.menu_prompt.addAction(prompt_action)
+
+        # self.action_prompt.
 
     def handle_subwindow_activated(self, subwindow):
         """
@@ -119,6 +176,11 @@ class MainWindow(QMainWindow, UiMixin):
         :param subwindow:
         :return:
         """
+        if subwindow in self.window_sort_list:
+            self.window_sort_list.remove(subwindow)
+
+        self.window_sort_list.insert(0, subwindow)
+
         if subwindow is None:
             delattr(self, "activated_subwindow")
         else:
@@ -134,7 +196,32 @@ class MainWindow(QMainWindow, UiMixin):
                     self.activated_subwindow.window_menu_action.setIcon(self.icon("check.png"))
                     self.last_activated_subwindow = self.activated_subwindow
 
-        # print('SubMdi窗口激活：', subwindow.widget().text())
+            # if hasattr(self.activated_subwindow, "setWindowState"):
+            #     self.activated_subwindow.setWindowState(Qt.WindowState.WindowMaximized)
+
+    def close_deleted_windows(self):
+        mdiArea: QMdiArea = self.mdiArea
+        count = 0
+        # 先统计一下看有没有能关闭的窗口
+        for win in mdiArea.subWindowList():
+            if win.windowTitle() == "删除":
+                count += 1
+
+        if count == 0:
+            return
+
+        reply = MessageBox.question(self, '确认', f'是否关闭{count}个标题为“删除”的窗口？',
+                                    buttons=QMessageBox.Yes | QMessageBox.No,
+                                    default_button=QMessageBox.No)
+        if reply == QMessageBox.No:
+            return
+
+        for win in mdiArea.subWindowList():
+            if win.windowTitle() == "删除":
+                win.close()
+        # activateWindow = mdiArea.activateWindow()
+        # if activateWindow is not None:
+        #     activateWindow.setWindowState(Qt.WindowState.WindowMaximized)
 
     def close_all_win(self):
         """
@@ -306,15 +393,15 @@ class MainWindow(QMainWindow, UiMixin):
             window.showMaximized()
             return
         read_part_data = False
-        if content_size > 200000:
+        if content_size > CONTENT_SIZE_SO_MUCH:
             QApplication.restoreOverrideCursor()
-            reply = MessageBox.question(self, '历史数据较多', MSG_HISTORY_RECORD_SO_MUCH,
-                                        buttons=QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
-                                        default_button=QMessageBox.Yes)
-            if reply == QMessageBox.Cancel:
-                return
-            elif reply == QMessageBox.Yes:
-                read_part_data = True
+            # reply = MessageBox.question(self, '历史数据较多', MSG_HISTORY_RECORD_SO_MUCH,
+            #                             buttons=QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel,
+            #                             default_button=QMessageBox.Yes)
+            # if reply == QMessageBox.Cancel:
+            #     return
+            # elif reply == QMessageBox.Yes:
+            read_part_data = True
 
             QApplication.setOverrideCursor(Qt.WaitCursor)
         sub_window = ChatWindow(session_id, subject, read_part_data)
@@ -356,7 +443,7 @@ class MainWindow(QMainWindow, UiMixin):
         if window is not None:
             self.mdiArea.setActiveSubWindow(window)
             return
-        col_names = ['按钮名称', '分类说明', '排序号']
+        col_names = ['按钮名称|关键字', '分类说明', '排序号']
 
         config_window = ButtonFunctionWindow(window_title, col_names=col_names)
         mdi_win = self.mdiArea.addSubWindow(config_window)
@@ -429,6 +516,9 @@ class MainWindow(QMainWindow, UiMixin):
         :param mdi_win:
         :return:
         """
+        if mdi_win in self.window_sort_list:
+            self.window_sort_list.remove(mdi_win)
+
         menu_window: QMenu = self.menu_window
         open_win_action = mdi_win.window_menu_action
         menu_window.removeAction(open_win_action)
@@ -469,6 +559,11 @@ class MainWindow(QMainWindow, UiMixin):
         :param mdi_win:
         :return:
         """
+        if mdi_win not in self.window_sort_list:
+            self.window_sort_list.insert(0, mdi_win)
+        else:
+            raise Exception("不可能")
+
         menu_window: QMenu = self.menu_window
         # win: QWidget = mdi_win.widget()
         win = mdi_win
@@ -501,12 +596,12 @@ class MainWindow(QMainWindow, UiMixin):
                 if activateWindow is not None:
                     activateWindow.setWindowState(window_state)
                 else:
-                    sub_windows = self.mdiArea.subWindowList()
-                    if len(sub_windows) > 0:
-                        sub_windows[0].setWindowState(window_state)
-                # sub_windows = self.mdiArea.subWindowList()
-                # for sub_window in sub_windows:
-                #     if sub_window != self:
-                #         sub_window.setWindowState(window_state)
+                    if len(self.window_sort_list) > 0:
+                        win = self.window_sort_list[0]
+                        if hasattr(win, "setWindowState"):
+                            win.setWindowState(window_state)
+                    # sub_windows = self.mdiArea.subWindowList()
+                    # if len(sub_windows) > 0:
+                    #     sub_windows[0].setWindowState(window_state)
 
         win.closeEvent = close_action

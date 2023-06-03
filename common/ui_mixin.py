@@ -109,6 +109,8 @@ class UiMixin:
         """
         if layout is None:
             return
+        if not hasattr(layout, "count"):
+            return
         for i in range(layout.count()):
             item = layout.itemAt(i)
             if isinstance(item, QWidgetItem):

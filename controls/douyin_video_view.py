@@ -28,7 +28,7 @@ class DouyinVideoView(TabInputView):
         self.btn_gen_job_title.clicked.connect(lambda: self.gen_job_title())
         self.btn_gen_job.clicked.connect(lambda: self.gen_jobs())
 
-        AppEvents.on_recieved_message_subscription(self.recieved_message)
+        self.session_events.on_recieved_message_subscription(self.recieved_message)
 
     def recieved_message(self, status, message):
         """
@@ -78,13 +78,14 @@ class DouyinVideoView(TabInputView):
         """
         job_title = str(job_title).lstrip('1234567890.、) ')
         # 下面根据我提供的标题写出对应的文案：走进未来：人工智能正在改变我们的生活方式
-        input_msg = f"下面根据我提供的标题写出对应的短视频文案,大概一到两分钟的视频时间，标题为：{job_title}"
+        input_msg = f"下面根据我提供的标题写出对应的短视频文案，大概一到两分钟的视频时间，" \
+                    f"标题为：{job_title}。视频的文案内容使用text代码块。"
         print(input_msg)  # message, no_context=False
         self.send_message(input_msg, no_context=True)
         self.current_job_status = 1
 
     def unbind_events(self):
-        AppEvents.on_recieved_message_unsubscription(self.recieved_message)
+        self.session_events.on_recieved_message_unsubscription(self.recieved_message)
 
     def gen_job_title(self):
         """

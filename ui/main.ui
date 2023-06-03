@@ -90,14 +90,23 @@
     <addaction name="separator"/>
     <addaction name="action_close_all_win"/>
     <addaction name="action_close_others"/>
+    <addaction name="action_close_deleted_win"/>
     <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menu_help">
     <property name="title">
      <string>帮助(&amp;H)</string>
     </property>
+    <widget class="QMenu" name="menu_prompt">
+     <property name="title">
+      <string>指令推荐</string>
+     </property>
+     <addaction name="separator"/>
+    </widget>
     <addaction name="action_about"/>
-    <addaction name="action_prompt"/>
+    <addaction name="action_opensource"/>
+    <addaction name="separator"/>
+    <addaction name="menu_prompt"/>
    </widget>
    <addaction name="menu_chat"/>
    <addaction name="menu_settings"/>
@@ -170,11 +179,6 @@
     <string>按钮功能</string>
    </property>
   </action>
-  <action name="action_prompt">
-   <property name="text">
-    <string>指令推荐</string>
-   </property>
-  </action>
   <action name="action_chatbots">
    <property name="text">
     <string>机器人自聊</string>
@@ -204,6 +208,16 @@
   <action name="action_about">
    <property name="text">
     <string>最新动态</string>
+   </property>
+  </action>
+  <action name="action_opensource">
+   <property name="text">
+    <string>开源地址</string>
+   </property>
+  </action>
+  <action name="action_close_deleted_win">
+   <property name="text">
+    <string>关闭标题为删除的窗口</string>
    </property>
   </action>
  </widget>

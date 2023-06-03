@@ -92,6 +92,17 @@ class HistoryOp:
         return execute_sql('UPDATE `t_history` SET order_no=? WHERE _id=?', [order_no, id])
 
     @classmethod
+    def update_content(cls, id, content):
+        """
+        更新内容
+        :param id: 聊天记录的ID
+        :param content: 内容
+        :return:
+        """
+        content_len = len(content)
+        return execute_sql('UPDATE `t_history` SET content=?, content_len=? WHERE _id=?', [content, content_len, id])
+
+    @classmethod
     def select(cls, id, entity_cls=None):
         """
         获取指定的聊天记录

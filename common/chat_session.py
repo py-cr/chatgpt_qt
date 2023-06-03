@@ -84,7 +84,7 @@ class ChatSession:
                 error_count += 1
 
         # Call the AppEvents to update the chat history  调用AppEvents更新聊天历史记录
-        AppEvents.on_chat_history_changed()
+        # AppEvents.on_chat_history_changed()
 
         # Set the answer dict with the role and content keys  设置Answer字典，其中包含角色和内容键
         answer = {"role": "assistant", "content": content}
@@ -93,7 +93,7 @@ class ChatSession:
         self.chat_history.append((0, answer, len(content)))
 
         # Call the AppEvents to update the chat history  调用AppEvents更新聊天历史记录
-        AppEvents.on_chat_history_changed()
+        # AppEvents.on_chat_history_changed()
 
         # Return the answer content  返回Answer内容
         return content, error_count
@@ -108,10 +108,10 @@ if __name__ == '__main__':
     reply = session.send_message("你好，1+1等于几？")
 
     # Print the reply  打印回复
-    print("\nreply\n", reply)
+    # print("\nreply\n", reply)
 
     # Print the chat history  打印聊天历史记录
-    print("\nchat_history\n", session.chat_history)
+    # print("\nchat_history\n", session.chat_history)
 
     # Send another message to the ChatSession object and get a reply  向ChatSession对象发送另一条消息并获取回复
     reply = session.send_message("我刚才问你什么问题？")

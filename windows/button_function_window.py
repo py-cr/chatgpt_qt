@@ -7,6 +7,8 @@
 # python_version  :3.8
 # ==============================================================================
 import json
+from PyQt5.QtCore import Qt, QItemSelectionModel
+from PyQt5.QtWidgets import QAbstractItemView
 from common.str_utils import is_empty
 from common.ui_mixin import UiMixin
 from controls.function_view import FunctionView, FUNCTION_SAMPLE_TEXT
@@ -49,11 +51,18 @@ class ButtonFunctionWindow(ConfigWindow, UiMixin):
             self.update_view_data()
         # print('Selected row:', _id)
 
+    def handle_data_loaded(self):
+        # 处理数据加载完成事件
+        self.tableView.clearSelection()
+        self.update_view_data()
+
     def update_view_data(self):
         """
         更新功能视图控件的数据
         :return:
         """
+        if not hasattr(self, "function_view"):
+            return
 
         def empty_method():
             pass
@@ -62,12 +71,13 @@ class ButtonFunctionWindow(ConfigWindow, UiMixin):
         # 因为该代码后面会触发改事件，先暂时忽略数据修改
         self.function_view.data_changed = empty_method
         # 获取当前行的配置数据，并更新到功能视图控件
-        value = self.get_current_config_value()
+        key, value = self.get_current_config_kv()
         if len(value) == 0:
             self.function_view.txt_suffix.setText("")
             self.function_view.txt_prefix.setText("")
             self.function_view.txt_message.setText(FUNCTION_SAMPLE_TEXT)
             self.function_view.set_button_style("")
+            self.function_view.button_preview.setText("按钮")
         else:
             json_data = json.loads(value)
             suffix = json_data["suffix"]
@@ -85,6 +95,7 @@ class ButtonFunctionWindow(ConfigWindow, UiMixin):
             self.function_view.txt_prefix.setText(prefix)
             self.function_view.txt_message.setText(sample)
             self.function_view.set_button_style(btn_style)
+            self.function_view.button_preview.setText(key.split('|')[0].strip())
 
         # 功能视图控件的数据发生变化事件有效
         self.function_view.data_changed = self.view_data_changed
@@ -145,6 +156,12 @@ class ButtonFunctionWindow(ConfigWindow, UiMixin):
 
         # 对事件的处理重新连接
         self.model.dataChanged.connect(self.on_data_changed)
+
+    def get_current_config_kv(self):
+        row = self.tableView.currentIndex().row()
+        current_record = self.model.record(row)
+        return current_record.value(self.model.fieldIndex('cfg_key')), \
+               current_record.value(self.model.fieldIndex('cfg_value'))
 
     def get_current_config_value(self):
         """

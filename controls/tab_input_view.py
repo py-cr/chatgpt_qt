@@ -17,12 +17,14 @@ import os
 import sys
 
 from common.ui_utils import find_ui
+from windows.session_window import SessionWindow
 
 
 class TabInputView(QWidget, UiMixin):
     """
     Tab页签功能控件基类
     """
+
     def __init__(self, parent, ui_name=None):
         # call QWidget constructor
         # QWidget.parentWidget()
@@ -35,6 +37,23 @@ class TabInputView(QWidget, UiMixin):
         # 从 .ui 文件加载 UI
         r = loadUi(find_ui(f"ui/{ui_name}.ui"), self)
         self.current_file = None
+
+    def session_window(self):
+        widget = self.parentWidget()
+        while True:
+            if isinstance(widget, SessionWindow):
+                return widget
+            widget = widget.parentWidget()
+
+        return None
+
+    @property
+    def session_events(self):
+        session_win = self.session_window()
+        if session_win is None:
+            return None
+
+        return session_win.session_events
 
     def find_top_layout(self):
         """
@@ -51,5 +70,3 @@ class TabInputView(QWidget, UiMixin):
                         return child
 
         return None
-
-

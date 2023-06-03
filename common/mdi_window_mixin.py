@@ -11,6 +11,7 @@ from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtGui import QIcon, QBrush, QPalette, QPixmap, QCloseEvent
 from PyQt5.QtWidgets import QWidget, QMessageBox, QMdiSubWindow, QVBoxLayout, QHBoxLayout, QBoxLayout, QStatusBar
 from common.ui_utils import find_ui, find_image, find_icon, set_icon
+from common.session_events import SessionEvents
 
 
 class MdiWindowMixin:
@@ -33,6 +34,9 @@ class MdiWindowMixin:
 
         # Set the widget as the content of the sub-window
         self.setWidget(self.widget)
+
+    def build_session_events(self):
+        self.session_events = SessionEvents()
 
     def find_top_layout(self: QMdiSubWindow):
         """

@@ -8,7 +8,7 @@
 # ==============================================================================
 from PyQt5.QtCore import Qt, QItemSelectionModel
 from PyQt5.QtSql import QSqlDatabase, QSqlTableModel
-from PyQt5.QtWidgets import QMessageBox, QMdiSubWindow
+from PyQt5.QtWidgets import QMessageBox, QMdiSubWindow, QAbstractItemView
 from PyQt5.QtWidgets import QToolBar, QStyledItemDelegate, QLineEdit
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QFont, QColor, QPalette
 from PyQt5.uic import loadUi
@@ -85,7 +85,31 @@ class ConfigWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         # 初始化按钮
         self.init_buttons()
 
+        self.txt_keyword.textChanged.connect(self.setFilter)
+
+        self.cmb_display_status.addItem("所有", -1)
+        self.cmb_display_status.addItem("启用", 0)
+        self.cmb_display_status.addItem("禁用", 1)
+
+        self.cmb_display_status.currentIndexChanged.connect(self.setFilter)
+
         self.setWindowIcon(self.default_icon())
+
+    def setFilter(self):
+        from common.str_utils import is_empty
+        keyword = self.txt_keyword.text().strip()
+        deleted = self.cmb_display_status.itemData(self.cmb_display_status.currentIndex())
+
+        if is_empty(keyword):
+            where_clause = f'cfg_category="{self.cfg_category}"'
+        else:
+            where_clause = f'cfg_category="{self.cfg_category}" AND cfg_key LIKE "%{keyword}%"'
+
+        if deleted >= 0:
+            where_clause += f" AND is_deleted={deleted}"
+
+        self.model.setFilter(where_clause)
+        self.on_search_keyword_changed(keyword)
 
     def init_table_model(self, col_names):
         """
@@ -94,6 +118,11 @@ class ConfigWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         :return:
         """
         self.model = QSqlTableModel()
+        self.model.dataChanged.connect(self.on_data_changed)
+        # 连接 modelReset() 信号，用于监听数据加载完成事件
+        self.model.modelReset.connect(self.handle_data_loaded)
+        self.tableView.setModel(self.model)
+
         table_name = 't_config'
         # where_clause = f'cfg_category="{self.cfg_category}" AND is_deleted=0'
         where_clause = f'cfg_category="{self.cfg_category}"'
@@ -111,9 +140,7 @@ class ConfigWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         self.model.setHeaderData(4, Qt.Horizontal, col_names[2])
         self.model.setHeaderData(5, Qt.Horizontal, 'Deleted')
 
-        self.model.dataChanged.connect(self.on_data_changed)
 
-        self.tableView.setModel(self.model)
         delegate = ConfigWindowStyledItemDelegate(self.model, callback=self.update_button_status)
         self.tableView.setItemDelegate(delegate)
         # self.tableView.setItemDelegateForColumn(0, delegate)
@@ -122,6 +149,12 @@ class ConfigWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         self.setColumnsWidth(["cfg_key", "cfg_value", "order_no"], [300, 500, 100])
         # self.data_changed = False
         self.tableView.selectionModel().selectionChanged.connect(self.on_row_selected)
+
+    def on_search_keyword_changed(self, keyword):
+        pass
+
+    def handle_data_loaded(self):
+        pass
 
     def init_buttons(self):
         """
@@ -151,7 +184,8 @@ class ConfigWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
     def on_row_selected(self, selected, deselected):
         # for index in selected.indexes():
         #     print('Selected row:', index.row())
-        print("row", self.tableView.currentIndex().row(), "column", self.tableView.currentIndex().column())
+        # print("row", self.tableView.currentIndex().row(), "column", self.tableView.currentIndex().column())
+        pass
 
     def setColumnsWidth(self, col_names, width):
         """

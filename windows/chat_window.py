@@ -9,18 +9,19 @@
 from PyQt5.QtCore import Qt, QEvent, pyqtSignal, QThread
 from PyQt5.QtGui import QTextCursor, QMouseEvent
 from PyQt5.QtWidgets import QApplication, QPushButton, QTextEdit, QHBoxLayout
-from PyQt5.QtWidgets import QMdiSubWindow, QWidget
+from PyQt5.QtWidgets import QMdiSubWindow, QWidget, QVBoxLayout
 from PyQt5.uic import loadUi
-
+import json
 from common.app_events import AppEvents
 from common.chat_utils import build_my_message, build_openai_message, plain_text_to_html, build_chat_title, \
-    message_total_size, get_button_functions
+    message_total_size, get_button_functions, message_to_html, get_history_chat_info, required_histories_for_win
 from common.control_init import init_ai_model_combo, init_ai_role_combo, init_categories_combo
 from common.mdi_window_mixin import MdiWindowMixin
 from common.message_box import MessageBox
 from common.str_utils import is_empty
 from common.ui_mixin import UiMixin
 from common.ui_utils import find_ui, get_html_style
+from controls.chat_view import ChatView
 from controls.coming_soon import ComingSoon
 from controls.cook_menu_view import CookMenuView
 from controls.douyin_video_view import DouyinVideoView
@@ -32,9 +33,10 @@ from db.entities import History
 from db.entities import Session
 from db.entities.consts import CFG_KEY_TAB_FUNCTION
 from db.entities.session_setting import SessionSetting
+from windows.session_window import SessionWindow
 
 
-class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
+class ChatWindow(SessionWindow):
     """
     聊天窗口
     """
@@ -42,6 +44,9 @@ class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
 
     def __init__(self, session_id, title="", read_part_data=False):
         super().__init__()
+        # 构建会话的事件
+
+        self.read_part_data = read_part_data
         # 从 .ui 文件加载 UI
         loadUi(find_ui("ui/chat.ui"), self)
         self.chat_history = []
@@ -51,8 +56,6 @@ class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         self.init_controls()
         # 初始化聊天会话中的设置项
         self.init_session_settings(self.session)
-        # 初始化历史记录，等待继续聊天
-        self.init_history_messages(read_part_data)
         # 检查 API Key 是否设置
         self.check_api_key()
         self.setWindowIcon(self.default_icon())
@@ -60,20 +63,12 @@ class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         self.bind_events()
         # 初始化工作线程
         self.init_worker_thread()
+        # 初始化历史记录，等待继续聊天
+        # self.init_history_messages(read_part_data) # TODO: 需要等浏览器网页加载完成后，再加载历史消息
 
     def chat_finished(self):
         """聊天"""
         self.btn_stop.setDisabled(True)
-
-    def append_message(self, text):
-        """
-        追加消息到聊天文本框
-        :param text: 聊天内容
-        :return:
-        """
-        self.txt_main.moveCursor(QTextCursor.End)
-        self.txt_main.insertHtml(text)
-        self.txt_main.moveCursor(QTextCursor.End)
 
     def init_worker_thread(self):
         """
@@ -82,7 +77,8 @@ class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         """
         from windows.chat_window_worker import ChatWindowWorker
         self.worker = ChatWindowWorker(ui=self)
-        self.worker.appendMessageSignal.connect(self.append_message)
+        self.worker.updateHtmlSignal.connect(self.txt_main.update_html)
+        self.worker.appendTitleSignal.connect(self.txt_main.append_title)
         self.worker.finishSignal.connect(self.chat_finished)
         self.worker_thread = QThread()
         self.worker.moveToThread(self.worker_thread)
@@ -165,7 +161,7 @@ class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
 
         init_ai_model_combo(self.cmb_ai_model, self.session_id)
 
-        self.splitter.setSizes([600, 400])
+        self.splitter.setSizes([700, 100])
 
         self.tab_text.setLayout(self.layout_text)
         # 工作助理
@@ -177,18 +173,26 @@ class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         # 家庭厨师
         self.cook_menu_view = CookMenuView(self.tab_food, self.send_message)
         self.tab_food.setLayout(self.cook_menu_view.layout_main)
-
         # 语音聊天
         self.voice_chat_view = ComingSoon(self.tab_voice_chat)
+        # self.tab_voice_chat.setLayout(self.voice_chat_view.layout_main)
 
         self.init_tab_function()
 
-        self.txt_main.setReadOnly(True)
-        self.txt_main.setFont(self.default_font())
-        self.txt_main.setStyleSheet(get_html_style())
+        layout_left: QVBoxLayout = self.layout_left
+        widget: QWidget = self.txt_main.parent()
+
+        self.txt_main.setParent(None)
+        widget.setContentsMargins(0, 0, 0, 0)
+
+        self.txt_main = ChatView(self)
+        self.txt_main.data_bridge.required_histories = self.required_histories
+        self.txt_main.data_bridge.supported_styles = self.supported_styles
+        layout_left.addWidget(self.txt_main)
+        layout_left.setSpacing(0)
+        # self.txt_main.browser.loadFinished.connect(self.loadFinished)
 
         self.tab_main.setCurrentIndex(0)
-        self.chk_md.setVisible(False)
 
         self.set_input_style([self.txt_chat])
         self.set_placeholder_text([self.txt_chat])
@@ -197,6 +201,44 @@ class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         self.set_icons([self.btn_send, self.btn_stop], ["comment2.png", "stop.png"])
 
         self.btn_stop.setDisabled(True)
+
+        # self.init_cmb_style()
+
+    def required_histories(self, history_id):
+        required_histories_for_win(self, history_id)
+
+    def supported_styles(self, style_names):
+        self.cmb_style.addItem("默认", "Default")
+        style_names = style_names.split("\n")
+        for style_name in style_names:
+            if not is_empty(style_name):
+                self.cmb_style.addItem(style_name, style_name)
+
+        self.cmb_style.currentIndexChanged.connect(self.chat_view_style_changed)
+
+        code_style = self.session_settings.code_style
+        if code_style != "Default":
+            for i in range(self.cmb_style.count()):
+                if code_style == self.cmb_style.itemText(i):
+                    self.cmb_style.setCurrentIndex(i)
+                    break
+            # self.txt_main.changeStyle(code_style)
+
+        # 初始化历史记录，等待继续聊天，需要等浏览器网页加载完成后，再加载历史消息
+        self.init_history_messages(self.read_part_data)
+
+    # def loadFinished(self, bool):
+    #     if bool:
+    #         code_style = self.session_settings.code_style
+    #         if code_style != "Default":
+    #             for i in range(self.cmb_style.count()):
+    #                 if code_style == self.cmb_style.itemText(i):
+    #                     self.cmb_style.setCurrentIndex(i)
+    #                     break
+    #             # self.txt_main.changeStyle(code_style)
+    #
+    #         # 初始化历史记录，等待继续聊天，需要等浏览器网页加载完成后，再加载历史消息
+    #         self.init_history_messages(self.read_part_data)
 
     def stop_chat(self):
         """
@@ -214,17 +256,20 @@ class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         self.cmb_categories.currentIndexChanged.connect(self.category_changed)
         self.cmb_ai_model.currentIndexChanged.connect(self.model_changed)
         self.chk_auto_wrap.clicked.connect(self.auto_wrap)
+        self.chk_auto_scroll.clicked.connect(self.auto_scroll)
         self.chk_msg_context.clicked.connect(self.on_msg_context_changed)
         self.cmb_ai_role.currentIndexChanged.connect(self.ai_role_changed)
+
         self.btn_send.clicked.connect(self.send_button_clicked)
         self.btn_clear_context.clicked.connect(self.clear_msg_context)
         self.btn_stop.clicked.connect(self.stop_chat)
 
-        AppEvents.on_chat_history_changed_subscription(self.on_chat_history_changed)
+        self.session_events.on_chat_history_changed_subscription(self.on_chat_history_changed)
+        self.session_events.on_recieved_message_subscription(self.recieved_message)
+
         AppEvents.on_ai_roles_changed_subscription(self.on_ai_roles_changed)
         AppEvents.on_button_functions_changed_subscription(self.on_button_functions_changed)
         AppEvents.on_chat_category_changed_subscription(self.on_chat_category_changed)
-        AppEvents.on_recieved_message_subscription(self.recieved_message)
 
     def unbind_events(self):
         """
@@ -234,11 +279,12 @@ class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         self.stop_chat()
         self.worker_thread.exit(0)
 
-        AppEvents.on_chat_history_changed_unsubscription(self.on_chat_history_changed)
+        self.session_events.on_recieved_message_unsubscription(self.recieved_message)
+        self.session_events.on_chat_history_changed_unsubscription(self.on_chat_history_changed)
+
         AppEvents.on_ai_roles_changed_unsubscription(self.on_ai_roles_changed)
         AppEvents.on_button_functions_changed_unsubscription(self.on_button_functions_changed)
         AppEvents.on_chat_category_changed_unsubscription(self.on_chat_category_changed)
-        AppEvents.on_recieved_message_unsubscription(self.recieved_message)
 
         self.douyin_video_view.unbind_events()
 
@@ -256,8 +302,11 @@ class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         if is_empty(ai_role):
             ai_role = ""
 
+        code_style = self.cmb_style.itemData(self.cmb_style.currentIndex())
+
         self.session_settings.msg_context_check = msg_context_check
         self.session_settings.ai_role = ai_role
+        self.session_settings.code_style = code_style
         json_str = self.session_settings.to_json_str()
 
         SessionOp.update_settings(self.session_id, json_str)
@@ -267,6 +316,11 @@ class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         AI角色修改后，保存设置
         :return:
         """
+        self.save_settings()
+
+    def chat_view_style_changed(self):
+        styleName = self.cmb_style.itemData(self.cmb_style.currentIndex())
+        self.txt_main.changeStyle(styleName)
         self.save_settings()
 
     def on_msg_context_changed(self):
@@ -279,8 +333,7 @@ class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
     def send_message(self, content, no_context):
         if not self.check_api_key():
             return
-        chat_content = build_my_message(content)
-        self.append_message(chat_content + "<br>")
+
         self.run_send_message_thread(content, no_context)
 
     def eventFilter(self, obj, event):
@@ -333,13 +386,20 @@ class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
     def window_id(self):
         return f"ChatWindow_{self.session_id}"
 
+    def is_auto_scroll(self):
+        if not hasattr(self, "chk_auto_scroll"):
+            return True
+        return self.chk_auto_scroll.checkState() == Qt.Checked
+
     def init_history_messages(self, read_part_data):
         """
         初始化历史记录，等待继续聊天
         :param read_part_data: 是否读取部分消息
         :return:
         """
-        histories = HistoryOp.select_by_session_id(self.session_id, order_by="order_no, _id", entity_cls=History)
+        self.all_histories = HistoryOp.select_by_session_id(self.session_id, order_by="order_no, _id",
+                                                            entity_cls=History)
+        histories = self.all_histories
         if len(histories) == 0:
             self.btn_clear_context.setText(f"缩减上下文(0)")
             self.auto_wrap()
@@ -356,27 +416,37 @@ class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
                 if total_size > msg_context_size * 1000:
                     if i < his_len - 1:
                         histories = histories[i + 1:]
+                        self.history_point_index = i
                         break
 
-        html = ""
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+
         for history in histories:
             role = history.role
             content = history.content
-            content_len = history.content_len
+            content_len = len(content)  # .content_len
+            if content_len == 0:
+                continue
             status = history.status
             self.chat_history.append((status, {"role": role, "content": content}, content_len))
-            # AppEvents.on_chat_history_changed()
-            if role == "user":
-                html += build_my_message(content, role_name=history.role_name)
-            elif role == "assistant":
-                html += build_openai_message(content, role_name=history.role_name)
+
+            is_left = history.role == "assistant"
+            icon_name, role_name, color_name, html = get_history_chat_info(history)
+
+            if is_left:
+                self.txt_main.left_title(history._id, icon_name, role_name, color_name)
+            else:
+                self.txt_main.right_title(history._id, icon_name, role_name, color_name)
+
+            self.txt_main.update_html(html, False)
 
         self.clear_msg_context()
         self.btn_clear_context_update()
 
-        self.txt_main.insertHtml(html + "<br>")
-        self.txt_main.moveCursor(QTextCursor.End)
+        self.txt_main.highlightAll()
+
         self.auto_wrap()
+        QApplication.restoreOverrideCursor()
 
     def init_categories(self):
         """
@@ -434,18 +504,24 @@ class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         self.init_categories()
 
     def to_markdown(self):
-        # QTextEdit.for
-        # QTextEdit.toHtml()
         if self.chk_md.checkState() == Qt.Checked:
             self.txt_main.toMarkdown()
         else:
             self.txt_main.toHtml()
 
-    def auto_wrap(self):
+    def auto_scroll(self):
+        """
+        自动滚动
+        :return:
+        """
+        if self.chk_auto_scroll.checkState() == Qt.Checked:
+            self.txt_main.scrollBottomEnabled()
+        else:
+            self.txt_main.scrollBottomDisabled()
 
+    def auto_wrap(self):
         if self.chk_auto_wrap.checkState() == Qt.Checked:
             self.txt_main.setLineWrapMode(QTextEdit.WidgetWidth)
-            self.txt_main.moveCursor(QTextCursor.End)
         else:
             self.txt_main.setLineWrapMode(QTextEdit.NoWrap)
 
@@ -496,8 +572,6 @@ class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
             if suffix is not None and len(suffix) > 0:
                 content = content + suffix
 
-        chat_content = build_my_message(content)
-        self.append_message(chat_content + "<br>")
         self.run_send_message_thread(content)
 
     def create_prompt_button(self, sample, button_style, mouse_pressed, key):
@@ -515,10 +589,7 @@ class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         btn_prompt.setMinimumWidth(13)
         btn_prompt.setMaximumWidth(13)
         btn_prompt.mousePressEvent = mouse_pressed(key)
-        # btn_prompt.setFlat(True)
-        # btn_prompt.setDefault(True)
-        # btn_prompt.setAutoDefault(True)
-        # btn_prompt.setAutoFillBackground(True)
+
         if not is_empty(button_style):
             # button_style = "border-color: rgb(255, 0, 127);" + button_style
             btn_prompt.setStyleSheet(button_style)
@@ -543,7 +614,7 @@ class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         buttons = []
         for key in func.keys():
             widget = QWidget()
-            button = QPushButton(key)
+            button = QPushButton(key.split('|')[0].strip())
             button_style = func[key]["ButtonStyle"]
             if not is_empty(button_style):
                 button.setStyleSheet(button_style)
@@ -593,8 +664,6 @@ class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
             col = i % num_rows
             grid.addWidget(button, row, col)
 
-        # self.function_buttons = buttons
-
     def send_button_clicked(self):
         """
         按钮发送消息
@@ -607,8 +676,6 @@ class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
 
         content = self.txt_chat.toPlainText()
 
-        chat_title = build_chat_title("[我]", "user.png", "blue")
-        self.append_message(chat_title + plain_text_to_html(content) + "<br>")
         self.run_send_message_thread(content)
 
     def build_messages(self, history_messages, no_context):
@@ -648,18 +715,21 @@ class ChatWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
         what_i_have_asked["role"] = "user"
         what_i_have_asked["content"] = message
 
-        HistoryOp.insert(role="user",
-                         content=message,
-                         content_type="text",
-                         session_id=self.session_id,
-                         status=0)
+        his_id = HistoryOp.insert(role="user",
+                                  content=message,
+                                  content_type="text",
+                                  session_id=self.session_id,
+                                  status=0)
+
+        self.txt_main.right_title(his_id, "me.png", "我", "blue")
+        html = message_to_html(message)
+        self.txt_main.update_html(html)
 
         self.chat_history.append((0, what_i_have_asked, len(message)))
-        AppEvents.on_chat_history_changed()
+        self.session_events.on_chat_history_changed()
 
         messages = self.build_messages(self.chat_history, no_context)
 
-        # print(messages)
         model_id = self.cmb_ai_model.currentText()
 
         self.model_id = model_id

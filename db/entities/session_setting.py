@@ -30,6 +30,7 @@ class SessionSetting:
         self.ai_init_subject = session_settings.get("ai_init_subject", "")
         self.ai2_name = session_settings.get("ai2_name", "")
         self.ai2_role = session_settings.get("ai2_role", "")
+        self.code_style = session_settings.get("code_style", "Default")
 
     def to_json_str(self):
         json_str = json.dumps(self.to_json_obj())
@@ -43,7 +44,8 @@ class SessionSetting:
             "ai1_role": self.ai1_role,
             "ai_init_subject": self.ai_init_subject,
             "ai2_name": self.ai2_name,
-            "ai2_role": self.ai2_role
+            "ai2_role": self.ai2_role,
+            "code_style": self.code_style
         }
 
     def has_ai_chat_settings(self):

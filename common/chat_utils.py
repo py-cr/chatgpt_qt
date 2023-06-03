@@ -16,6 +16,8 @@ from db.db_ops import ConfigOp
 # 历史数据较多 的提示消息
 MSG_HISTORY_RECORD_SO_MUCH = '历史数据较多，打开聊天会比较慢，是否只读取最近记录？\n' \
                              '选“是”，则读取最近的记录\n选“否”,则打开全部记录\n或者“取消”操作'
+# 历史数据认为 > CONTENT_SIZE_SO_MUCH 就较多，提示
+CONTENT_SIZE_SO_MUCH = 10000
 
 # Please reduce the length of the messages
 # Rate limit reached for default-gpt-3.5-turbo in organization org-ItuVH8h8JDDhOVHJehbSn0Lj on requests per min. Limit: 3 / min. Please try again in 20s. Contact us through our help center at help.openai.com if you continue to have issues. Please add a payment method to your account to increase your rate limit. Visit https://platform.openai.com/account/billing to add a payment method.
@@ -42,7 +44,9 @@ def build_chat_title(who, icon=None, color=None):
     if color is None:
         color = "black"
     message_begin = f"""<div style='color:{color}'>"""
-    return f"<div style='color:{color}'>{icon_html} {who}</div>{message_begin}"
+    html = f"<div style='color:{color}'>{icon_html} {who}</div>{message_begin}"
+    # print("build_chat_title", html)
+    return html
 
 
 def build_send_message(message, icon=None, color=None):
@@ -87,16 +91,72 @@ def plain_text_to_html(plain_text):
     return html
 
 
+def get_history_chat_info(history):
+    """
+
+    :param history:
+    :return:
+    """
+    role_name = history.role_name
+    if history.role == "user":
+        color_name = "blue"
+        if is_empty(role_name):
+            role_name = "我"
+            icon_name = "me.png"
+        else:
+            icon_name = "icon_blue.png"
+    elif history.role == "assistant":
+        color_name = "green"
+        icon_name = "icon_green.png"
+        if is_empty(role_name):
+            role_name = "OpenAi"
+    else:
+        color_name = "green"
+        icon_name = ""
+    html = message_to_html(history.content)
+    return icon_name, role_name, color_name, html
+
+
+def required_histories_for_win(win_self, history_id):
+    # print("OK", history_id)
+    if not hasattr(win_self, "history_point_index") or not hasattr(win_self, "all_histories"):
+        return
+    # print(self.all_histories[self.history_point_index])
+    for i in range(10):
+        # len() = 3   index= 2
+        # if self.history_point_index < 0:
+        #     # 最后一条数据，已经到顶了
+        #     return
+
+        history = (win_self.all_histories[win_self.history_point_index])
+        # insert_chat_item(self, his_id, is_left, icon, title, color, html, highlightElement=True)
+        is_left = history.role == "assistant"
+        icon_name, title, color_name, html = get_history_chat_info(history)
+
+        if not is_empty(title):
+            win_self.txt_main.insert_chat_item(history._id, is_left, icon_name, title,
+                                               color_name, html, highlightElement=True)
+
+        if win_self.history_point_index == 0:
+            # 最后一条数据，已经到顶了
+            win_self.txt_main.setIsAtTop(True)
+            win_self.txt_main.scrollToLastTopElement()
+            return
+        win_self.history_point_index -= 1
+
+    win_self.txt_main.scrollToLastTopElement()
+    win_self.txt_main.setIsAtTop(False)
+
+
 def message_to_html(message):
     """
     消息转 html 格式
     :param message:
     :return:
     """
-
-    html = plain_text_to_html(message)
     # TODO:方法0
-    return html
+    # html = plain_text_to_html(message)
+    # return html
 
     # message = message.replace("\r\n","\n").replace("\r","\n")
     # message = message.replace("<", "&lt;").replace(">", "&gt;")
@@ -104,19 +164,51 @@ def message_to_html(message):
     # html = html.replace("\n", "<br>")
 
     # TODO:方法1
-    # import commonmark
-    # parser = commonmark.Parser()
-    # ast = parser.parse(message)
-    # renderer = commonmark.HtmlRenderer()
-    # html = renderer.render(ast)
+    import commonmark
+    parser = commonmark.Parser()
+    ast = parser.parse(message)
+    renderer = commonmark.HtmlRenderer()
+    html = renderer.render(ast)
+    return html
 
-    # TODO:方法2
+    # # TODO:方法2
     # from markdown2 import markdown
     # html = markdown(message)
+    # return replace_as_pre(html)
 
-    # TODO:方法3
+    # # TODO:方法3
     # from markdown import markdown
     # html = markdown(message)
+    # return replace_as_pre(html)
+
+
+def check_code(pre_html: str):
+    code = ["python", "js"]
+    for c in code:
+        if pre_html.startswith(c):
+            return f"<pre class='{c}'>[{c}]<br>", pre_html[len(c):]
+    return "<pre>", pre_html
+
+
+def replace_as_pre(html):
+    pre_start = True
+    if '```' in html:
+        while True:
+            if '```' not in html:
+                break
+            find_pre_idx = html.index('```')
+            if find_pre_idx < 0:
+                break
+
+            if pre_start:
+                pre, suffix = check_code(html[find_pre_idx + 3:])
+                html = html[:find_pre_idx] + pre + suffix
+                pre_start = False
+            else:
+                html = html[:find_pre_idx] + "</pre>" + html[find_pre_idx + 3:]
+                pre_start = True
+    # html = html.replace("\n", "<br>")
+    return html
 
 
 def build_chat_message(who, message, icon=None, color=None):
@@ -129,7 +221,7 @@ def build_chat_message(who, message, icon=None, color=None):
     :return:
     """
     if icon is not None:
-        icon_file = find_icon_file(icon)
+        icon_file = find_icon_file(icon).replace("\\", "/")
         icon_html = f"<img src='{icon_file}'>"
     else:
         icon_html = ""
@@ -172,7 +264,7 @@ def build_openai_message(content, role_name=None):
     else:
         color = "green"
 
-    return build_chat_message(f"[{role_name}]", content, "icon_16.png", "green")  # + "<hr>"
+    return build_chat_message(f"[{role_name}]", content, "icon_green.png", "green")  # + "<hr>"
 
 
 def build_my_message(content, role_name=None):
@@ -184,10 +276,10 @@ def build_my_message(content, role_name=None):
     """
     if is_empty(role_name):
         role_name = "我"
-        icon_name = "user.png"
+        icon_name = "user24.png"
     else:
         icon_name = "icon_blue.png"
-    # return build_send_message(content, "user.png", "blue")
+    # return build_send_message(content, "user24.png", "blue")
     return build_chat_message(f"[{role_name}]", content, icon_name, "blue")
 
 
