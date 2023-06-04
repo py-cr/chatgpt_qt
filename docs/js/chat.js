@@ -20,9 +20,11 @@ function scrollBottom() {
 
 var currentStyle="Default";
 function changeStyle(styleName){
+    hideAllItems();
     $(`link[title="${styleName}"]`).removeAttr("disabled");
     $(`link[title="${currentStyle}"]`).attr("disabled","disabled");
     currentStyle = styleName;
+    showAllItems();
     // alert(`link[title="${styleName}"]`);
 }
 
@@ -56,6 +58,10 @@ id_index = 0;
 function showAllItems() {
     $("#html_body").find(".l-item, .r-item").css("visibility", "visible");
     // $("#html_body").find(".r-item").css("visibility", "visible");
+}
+
+function hideAllItems() {
+    $("#html_body").find(".l-item, .r-item").css("visibility", "hidden");
 }
 
 
