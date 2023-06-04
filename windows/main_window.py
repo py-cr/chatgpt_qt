@@ -156,6 +156,7 @@ class MainWindow(QMainWindow, UiMixin):
             ("文心一言(百度)", "https://yiyan.baidu.com/", "ernie_info.png"),
             ("通义千问(阿里云)", "https://tongyi.aliyun.com/", "tongyi.png"),
             ("ChatGPT(OpenAI)", "https://chat.openai.com/", "icon_24.png"),
+            ("Claude AI 聊天机器人", "https://www.anthropic.com/claude-in-slack", "anthropic.png"),
             ("|",),
             ("Midjourney(AI绘画)", "https://www.midjourney.com/", "midjourney.png"),
             ("腾讯智影(虚拟主播)", "https://zenvideo.qq.com/", "zenvideo.png"),
