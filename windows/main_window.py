@@ -46,6 +46,8 @@ class MainWindow(QMainWindow, UiMixin):
         self.bind_events()
         # 初始化指令菜单
         self.init_prompt_menus()
+        # 初始化推荐网站
+        self.init_recommend_web_menus()
         # 数据库初始化
         db_version_check()
         # 打开聊天历史
@@ -53,39 +55,21 @@ class MainWindow(QMainWindow, UiMixin):
         # 用于窗口排序
         self.window_sort_list = []
 
-    # def db_init(self):
-    #     """
-    #     数据库初始化
-    #     :return:
-    #     """
-    #     db_check_init()
-    # db_file = os.path.join("data", DB_NAME)
-    # if not os.path.exists(db_file):
-    #     # 如果数据库不存在，则进行初始化
-    #     ConfigOp.create_table()
-    #     SessionOp.create_table()
-    #     HistoryOp.create_table()
-    #
-    #     ConfigOp.init_ai_roles()
-    #     ConfigOp.init_button_funcs()
-    #     ConfigOp.init_categories()
-    #     ConfigOp.init_tab_funcs()
-
     def init_icons(self):
         self.set_icons([
             self.menu_chat, self.action_new_chat, self.action_chat_history, self.action_exit, self.menu_settings,
             self.action_openai_setting, self.action_roles, self.menu_window, self.action_categories,
             self.action_win_cascade, self.action_win_tile, self.action_recycle_bin, self.action_function,
-            self.action_win_min, self.action_win_max, self.action_chatbots, self.menu_prompt,
+            self.action_win_min, self.action_win_max, self.action_chatbots, self.menu_prompt, self.menu_recommend_web,
             self.action_close_others, self.action_close_all_win, self.action_close_deleted_win, self.action_tab_fun,
             self.action_about, self.menu_help, self.action_opensource
         ], [
             "comment.png", "comment.png", "history.png", "sign-out.png", "settings.png",
             "config.png", "brainstorming.png", "windows.png", "category.png",
             "application_cascade.png", "application_tile_horizontal.png", "bin.png", "button-color-circle.png",
-            "application-min.png", "application.png", "bubbles3.png", "star.png",
+            "application-min.png", "application.png", "bubbles3.png", "star.png", "star.png",
             "application_delete.png", "application_cascade_delete.png", "application_cascade_delete.png", "tab.png",
-            "icon.png", "help.png", "icon.png"
+            "pythoncr_icon.png", "help.png", "pythoncr_icon.png"
         ])
 
     def open_about(self):
@@ -135,7 +119,8 @@ class MainWindow(QMainWindow, UiMixin):
             ("Mr. Ranedeer AI 导师", "https://gitcode.net/pythoncr/Mr.-Ranedeer-AI-Tutor", "git.png"),
             ("|",),
             ("Awesome ChatGPT Prompts", "https://prompts.chat/", "brain.png"),
-            ("Mr.-Ranedeer-AI-Tutor", "https://gitcode.net/pythoncr/Mr.-Ranedeer-AI-Tutor", "git.png")
+            # ("Mr.-Ranedeer-AI-Tutor", "https://github.com/JushBJJ/Mr.-Ranedeer-AI-Tutor", "git.png")
+
         ]
 
         for prompt_item in prompt_urls:
@@ -164,7 +149,44 @@ class MainWindow(QMainWindow, UiMixin):
             # mnu_prompt.actionGroup().addAction()
             self.menu_prompt.addAction(prompt_action)
 
-        # self.action_prompt.
+    def init_recommend_web_menus(self):
+
+        recommend_urls = [
+            ("讯飞星火(科大讯飞)", "https://xinghuo.xfyun.cn/", "fxxh.png"),
+            ("文心一言(百度)", "https://yiyan.baidu.com/", "ernie_info.png"),
+            ("通义千问(阿里云)", "https://tongyi.aliyun.com/", "tongyi.png"),
+            ("ChatGPT(OpenAI)", "https://chat.openai.com/", "icon_24.png"),
+            ("|",),
+            ("Midjourney(AI绘画)", "https://www.midjourney.com/", "midjourney.png"),
+            ("腾讯智影(虚拟主播)", "https://zenvideo.qq.com/", "zenvideo.png"),
+            ("Kreadoai(虚拟主播)", "https://www.kreadoai.com/", "kreadoai.png"),
+            ("DeepLearning.AI(在线教育)", "https://learn.deeplearning.ai/", "deeplearningai.png")
+        ]
+
+        for recommend_item in recommend_urls:
+            def open_web_url(url):
+                def inner():
+                    open_url(url)
+
+                return inner
+
+            text = recommend_item[0]
+            if text == "|":
+                web_action = QAction(self)
+                web_action.setSeparator(True)
+            else:
+                web_action = self.createAction(text=text, slot=open_web_url(recommend_item[1]))
+
+                if len(recommend_item) > 2:
+                    item_icon = recommend_item[2]
+                else:
+                    item_icon = ""
+
+                if is_empty(item_icon):
+                    item_icon = "star.png"
+
+                self.set_icon(web_action, item_icon)
+            self.menu_recommend_web.addAction(web_action)
 
     def handle_subwindow_activated(self, subwindow):
         """
