@@ -108,10 +108,9 @@ class MainWindow(QMainWindow, UiMixin):
         self.action_close_deleted_win.triggered.connect(self.close_deleted_windows)
 
     def init_prompt_menus(self):
+        """
 
-        # self.action_prompt.triggered.connect(self.open_prompt)
-        # open_url("https://xinghuo.xfyun.cn/instruction")
-
+        """
         prompt_urls = [
             ("讯飞星火认知大模型指令集", "https://xinghuo.xfyun.cn/instruction", "fxxh.png"),
             ("ChatGPT 快捷指令", "https://www.aishort.top/", "aishort.png"),
@@ -150,6 +149,9 @@ class MainWindow(QMainWindow, UiMixin):
             self.menu_prompt.addAction(prompt_action)
 
     def init_recommend_web_menus(self):
+        """
+
+        """
 
         recommend_urls = [
             ("讯飞星火(科大讯飞)", "https://xinghuo.xfyun.cn/", "fxxh.png"),

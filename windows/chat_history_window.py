@@ -113,15 +113,9 @@ class ChatHistoryWindow(QMdiSubWindow, UiMixin, MdiWindowMixin):
                 if code_style == self.cmb_style.itemText(i):
                     self.cmb_style.setCurrentIndex(i)
                     break
-            # self.txt_main.changeStyle(code_style)
 
         # 初始化历史记录，等待继续聊天，需要等浏览器网页加载完成后，再加载历史消息
         self.init_history_messages(self.read_part_data)
-
-    # def loadFinished(self, bool):
-    #     if bool:
-    #         # 初始化历史记录，等待继续聊天，需要等浏览器网页加载完成后，再加载历史消息
-    #         self.init_history_messages(self.read_part_data)
 
     def chat_view_style_changed(self):
         styleName = self.cmb_style.itemData(self.cmb_style.currentIndex())

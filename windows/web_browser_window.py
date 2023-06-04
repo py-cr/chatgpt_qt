@@ -19,14 +19,6 @@ from common.ui_utils import find_file
 from common.ui_utils import find_ui, find_image
 
 
-# from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout
-#
-# # from PyQt5.QtCore import *
-# # from PyQt5.QtGui import *
-# # from PyQt5.QtWidgets import *
-# # from PyQt5.QtWebEngineWidgets import *
-
-
 class WebBrowserWindow(QMdiSubWindow, UiMixin):
     """
     浏览器窗口
