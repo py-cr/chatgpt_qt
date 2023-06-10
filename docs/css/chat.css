@@ -7,7 +7,16 @@ body {
     /*background-color: #f5f6f7;*/
     /*color: #333;*/
     /*min-height: 100%;*/
+    background-image: url(../images/loading/page_loading.gif);
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-position-y: 100px;
+    background-attachment: fixed;
 }
+
+/*body {*/
+/*    background-image: none;*/
+/*}*/
 /*::selection {*/
 /*    background:lightblue;*/
 /*    color:#000;*/
@@ -104,8 +113,8 @@ code {
     /*text-indent: -8px;*/
 }
 
-pre{
-    background-color: rgba(0,0,0,0.2);
+pre {
+    background-color: rgba(0, 0, 0, 0.2);
     margin: 1px;
     padding: 1px;
 }
@@ -155,22 +164,22 @@ button.copy-code {
     /*background-image: url("../images/page-copy.png");*/
     /*background-image: url("../images/copy.png");*/
     border: white solid 0px;
-    margin: 20px 30px 5px 5px;/* 代码中进行调整 */
+    margin: 20px 30px 5px 5px; /* 代码中进行调整 */
     position: absolute;
     right: 0;
     top: 0;
     opacity: 0.7;
 }
 
-button.copy-code:hover{
+button.copy-code:hover {
     opacity: 1;
 }
 
-button.copy-n{
+button.copy-n {
     background: url("../images/copy_n.png") no-repeat center center;
 }
 
-button.copy-ok{
+button.copy-ok {
     background: url("../images/copy_ok.png") no-repeat center center;
 }
 

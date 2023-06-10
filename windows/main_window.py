@@ -21,6 +21,7 @@ from common.ui_utils import find_ui, open_url
 from db.db_init import db_version_check
 from db.db_ops import SessionOp
 from db.entities.consts import CFG_KEY_AI_ROLE, CFG_KEY_CHAT_CATEGORY, CFG_KEY_TAB_FUNCTION
+from windows.ai_chat_window import AiChatWindow
 from windows.button_function_window import ButtonFunctionWindow
 from windows.chat_recycle_bin import ChatRecycleBin
 from windows.chat_window import ChatWindow
@@ -85,7 +86,7 @@ class MainWindow(QMainWindow, UiMixin):
         """
         self.action_win_min.setVisible(False)
         self.action_new_chat.triggered.connect(self.new_chat)
-        self.action_chatbots.triggered.connect(self.open_coming_soon)
+        self.action_chatbots.triggered.connect(self.new_ai_chat)
         self.action_chat_history.triggered.connect(self.open_chat_history)
         self.action_exit.triggered.connect(self.quit)
         self.action_openai_setting.triggered.connect(self.openai_setting)
@@ -344,6 +345,43 @@ class MainWindow(QMainWindow, UiMixin):
         self.menu_window_add(mdi_win)
         sub_window.showMaximized()
 
+
+    def new_ai_chat(self, settings=None):
+        """
+        新开一个两AI聊天的窗口
+        :param settings: 设置信息为（AI名称、AI角色等信息）
+        :return:
+        """
+        session_id = SessionOp.insert("")
+        if not isinstance(settings, dict):
+            settings = None
+        self.open_ai_chat_window(session_id, "", True, 0, settings)
+
+    def open_ai_chat_window(self, session_id, subject, new_chat_session, content_size, settings=None):
+        """
+        打开一个两AI聊天的窗口
+        :param session_id:
+        :param subject:
+        :param new_chat_session:
+        :param content_size:
+        :param settings:
+        :return:
+        """
+        window = self.find_exists_window(f"AiChatWindow_{session_id}")
+        if window is not None:
+            self.mdiArea.setActiveSubWindow(window)
+            window.showMaximized()
+            return
+        read_part_data = False
+        if content_size > CONTENT_SIZE_SO_MUCH:
+            read_part_data = True
+
+        sub_window = AiChatWindow(session_id, subject, read_part_data, self.new_ai_chat, settings)
+        sub_window.new_chat_session = new_chat_session
+        mdi_win = self.mdiArea.addSubWindow(sub_window)
+        self.menu_window_add(mdi_win)
+        sub_window.showMaximized()
+
     def new_chat(self):
         """
         新开一个聊天
@@ -357,7 +395,8 @@ class MainWindow(QMainWindow, UiMixin):
         打开聊天历史
         :return:
         """
-        history_dock = HistoryWindow(open_chat=self.open_chat_window)
+        history_dock = HistoryWindow(open_chat=self.open_chat_window,
+                                     open_ai_chat=self.open_ai_chat_window)
         history_dock.setAllowedAreas(Qt.LeftDockWidgetArea)
         history_dock.setWindowTitle("聊天历史")
         history_dock.dockWidgetContents.setLayout(history_dock.layout_main)

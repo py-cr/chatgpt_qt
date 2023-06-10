@@ -1,3 +1,5 @@
+$("#html_body").css("visibility", "hidden");
+
 function clearHtml() {
     $("#html_body").empty();
 }
@@ -18,11 +20,12 @@ function scrollBottom() {
     }
 }
 
-var currentStyle="Default";
-function changeStyle(styleName){
+var currentStyle = "Default";
+
+function changeStyle(styleName) {
     hideAllItems();
     $(`link[title="${styleName}"]`).removeAttr("disabled");
-    $(`link[title="${currentStyle}"]`).attr("disabled","disabled");
+    $(`link[title="${currentStyle}"]`).attr("disabled", "disabled");
     currentStyle = styleName;
     showAllItems();
     // alert(`link[title="${styleName}"]`);
@@ -169,6 +172,12 @@ function updateHtmlWithScrollToBottom(html, highlightElement, scrollToBottom) {
 
 function highlightAll() {
     hljs.highlightAll();
+    pageLoaded()
+}
+
+function pageLoaded() {
+    $("body").css("background-image", "none");
+    $("#html_body").css("visibility", "visible");
 }
 
 document.oncontextmenu = function () {
@@ -311,8 +320,8 @@ $(document).ready(function () {
         window.logger = channel.objects.consoleBridge;
         window.dataBridge = channel.objects.dataBridge;
         var styles = "";
-        $(`link[disabled="disabled"]`).each(function(){
-        styles += $(this).attr("title") + "\n";
+        $(`link[disabled="disabled"]`).each(function () {
+            styles += $(this).attr("title") + "\n";
         });
         dataBridge.onSupportedStyles(styles);
 

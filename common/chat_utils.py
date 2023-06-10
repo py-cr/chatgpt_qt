@@ -173,42 +173,47 @@ def message_to_html(message):
 
     # # TODO:方法2
     # from markdown2 import markdown
-    # html = markdown(message)
-    # return replace_as_pre(html)
+    # exts = ['extra', 'codehilite', 'tables', 'toc', 'nl2br']
+    # html = markdown(message, html4tags=False, extras=exts)
+    # return html
 
     # # TODO:方法3
     # from markdown import markdown
-    # html = markdown(message)
-    # return replace_as_pre(html)
+    # exts = ['extra', 'abbr', 'attr_list', 'def_list', 'fenced_code', 'footnotes', 'md_in_html',
+    #         'admonition', 'legacy_attrs', 'legacy_em', 'meta', 'sane_lists', 'smarty', 'wikilinks',
+    #         'codehilite', 'tables', 'toc', 'nl2br']
+    # # exts = ['extra', 'codehilite', 'tables', 'toc', 'nl2br']
+    # html = markdown(message, extensions=exts)
+    # return html
 
 
-def check_code(pre_html: str):
-    code = ["python", "js"]
-    for c in code:
-        if pre_html.startswith(c):
-            return f"<pre class='{c}'>[{c}]<br>", pre_html[len(c):]
-    return "<pre>", pre_html
+# def check_code(pre_html: str):
+#     code = ["python", "js"]
+#     for c in code:
+#         if pre_html.startswith(c):
+#             return f"<pre class='{c}'>[{c}]<br>", pre_html[len(c):]
+#     return "<pre>", pre_html
 
 
-def replace_as_pre(html):
-    pre_start = True
-    if '```' in html:
-        while True:
-            if '```' not in html:
-                break
-            find_pre_idx = html.index('```')
-            if find_pre_idx < 0:
-                break
-
-            if pre_start:
-                pre, suffix = check_code(html[find_pre_idx + 3:])
-                html = html[:find_pre_idx] + pre + suffix
-                pre_start = False
-            else:
-                html = html[:find_pre_idx] + "</pre>" + html[find_pre_idx + 3:]
-                pre_start = True
-    # html = html.replace("\n", "<br>")
-    return html
+# def replace_as_pre(html):
+#     pre_start = True
+#     if '```' in html:
+#         while True:
+#             if '```' not in html:
+#                 break
+#             find_pre_idx = html.index('```')
+#             if find_pre_idx < 0:
+#                 break
+#
+#             if pre_start:
+#                 pre, suffix = check_code(html[find_pre_idx + 3:])
+#                 html = html[:find_pre_idx] + pre + suffix
+#                 pre_start = False
+#             else:
+#                 html = html[:find_pre_idx] + "</pre>" + html[find_pre_idx + 3:]
+#                 pre_start = True
+#     # html = html.replace("\n", "<br>")
+#     return html
 
 
 def build_chat_message(who, message, icon=None, color=None):

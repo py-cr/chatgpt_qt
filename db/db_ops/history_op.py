@@ -138,14 +138,16 @@ class HistoryOp:
         return my_objs
 
     @classmethod
-    def select_by_session_id(cls, session_id, order_by=None, entity_cls=None):
+    def select_by_session_id(cls, session_id, order_by=None, entity_cls=None, clear_empty=True):
         """
         获取指定会话的聊天记录
         :param session_id: 会话ID
         :param order_by: 排序
         :param entity_cls: 转化后的实体类类型
+        :param clear_empty: 清除空记录
         :return:
         """
+
         if order_by is None:
             order_by = "order_no, _id DESC"
         df = select_sql(f'SELECT * FROM `t_history` WHERE is_deleted=0 AND session_id=? ORDER BY {order_by}',
@@ -154,7 +156,11 @@ class HistoryOp:
             return df
 
         rows = df.itertuples(index=False)
+        if clear_empty:
+            rows = filter(lambda r: len(r.content) > 0, rows)
+
         my_objs = [entity_cls(*row) for row in rows]
+
         return my_objs
 
     @classmethod

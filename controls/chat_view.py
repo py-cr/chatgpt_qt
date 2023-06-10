@@ -131,6 +131,13 @@ class ChatView(QWidget, UiMixin):
             color = ""
         self.runjs(f'rightTitle({his_id},"{icon}","{title}","{color}")')
 
+    def page_loaded(self):
+        """
+        页面加载完成
+        @return:
+        """
+        self.runjs('pageLoaded()')
+
     def append_title(self, his_id, is_left, icon, title, color=None):
         """
         增加标题
@@ -235,6 +242,8 @@ class ChatView(QWidget, UiMixin):
             self.runjs(f'auto_wrap_disable()')
         else:
             self.runjs(f'auto_wrap_enable()')
+
+        self.page_loaded()
 
     def runjs(self, js, callback=None):
         if callback is None:

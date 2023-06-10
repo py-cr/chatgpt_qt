@@ -28,18 +28,19 @@ class HistoryWindow(QDockWidget, UiMixin):
     历史聊天窗口
     """
 
-    def __init__(self, open_chat):
+    def __init__(self, open_chat, open_ai_chat):
         super().__init__()
 
         loadUi(find_ui("ui/history.ui"), self)
         # 绑定3个方法
         self.open_chat = open_chat  # 打开一个聊天窗口
+        self.open_ai_chat = open_ai_chat  # 打开一个 两AI 聊天窗口
         # self.btn_search.setVisible(False)
         # 绑定事件
         self.bind_events()
 
-        self.set_icons([self.btn_delete_chat, self.btn_open_chat, self.btn_refresh],
-                       ['cross.png', 'comment.png', 'refresh.png'])
+        self.set_icons([self.btn_delete_chat, self.btn_open_chat,  self.btn_open_ai_chat, self.btn_refresh],
+                       ['cross.png', 'comment.png', 'bubbles3.png', 'refresh.png'])
         # bin.png cross.png
 
         # 初始化控件
@@ -54,6 +55,7 @@ class HistoryWindow(QDockWidget, UiMixin):
         """
         self.btn_delete_chat.clicked.connect(self.delete_chat)
         self.btn_open_chat.clicked.connect(self.open_selected_chat)
+        self.btn_open_ai_chat.clicked.connect(self.open_selected_ai_chat)
         self.btn_refresh.clicked.connect(self.load_history)
         self.txt_keyword.textChanged.connect(self.load_history)
         self.tabvw_his.doubleClicked.connect(self.open_chat_by_settings)
@@ -112,6 +114,9 @@ class HistoryWindow(QDockWidget, UiMixin):
     def open_selected_chat(self):
         self.open_chat_by_index(self.tabvw_his.currentIndex())
 
+    def open_selected_ai_chat(self):
+        self.open_chat_by_index(self.tabvw_his.currentIndex(), self.open_ai_chat)
+
     def open_chat_by_settings(self, index):
         row = index.row()
         if row < 0:
@@ -122,7 +127,7 @@ class HistoryWindow(QDockWidget, UiMixin):
         if is_empty(settings):
             self.open_selected_chat()
         else:
-            self.open_selected_chat()
+            self.open_selected_ai_chat()
 
     def open_chat_by_index(self, index, open_chat=None):
         if open_chat is None:
