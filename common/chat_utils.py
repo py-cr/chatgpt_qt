@@ -13,9 +13,6 @@ from db.db_ops import ConfigOp
 
 # import commonmark  # pip install -i https://pypi.douban.com/simple/ markdown2 commonmark
 
-# 历史数据较多 的提示消息
-MSG_HISTORY_RECORD_SO_MUCH = '历史数据较多，打开聊天会比较慢，是否只读取最近记录？\n' \
-                             '选“是”，则读取最近的记录\n选“否”,则打开全部记录\n或者“取消”操作'
 # 历史数据认为 > CONTENT_SIZE_SO_MUCH 就较多，提示
 CONTENT_SIZE_SO_MUCH = 10000
 

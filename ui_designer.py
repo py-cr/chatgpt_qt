@@ -2,7 +2,7 @@
 # title           :ui_designer.py
 # description     :UI设计器
 # author          :Python超人
-# date            :2022-3-28
+# date            :2023-6-1
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================

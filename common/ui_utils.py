@@ -2,7 +2,7 @@
 # title           :ui_utils.py
 # description     :UI工具类
 # author          :Python超人
-# date            :2023-3-3
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
@@ -156,13 +156,6 @@ def open_url(url):
         os.system("start " + str(url))
 
 
-# """
-# code {
-#     font-family: 'Microsoft Yahei', '微软雅黑', 'Courier New', Courier, monospace;
-#     color:red;
-#     font-size: 14px;
-#   }
-# """
 if __name__ == '__main__':
     print(find_ui('main.ui'))
     open_url("https://gitcode.net/pythoncr/index")

@@ -2,7 +2,7 @@
 # title           :ai_converse.py
 # description     :两AI聊天类
 # author          :Python超人
-# date            :2022-5-1
+# date            :2023-6-13
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================

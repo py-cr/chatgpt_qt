@@ -2,7 +2,7 @@
 # title           :ui_mixin.py
 # description     :UiMixin
 # author          :Python超人
-# date            :2023-3-3
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================

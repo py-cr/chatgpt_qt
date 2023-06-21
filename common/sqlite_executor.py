@@ -2,7 +2,7 @@
 # title           :sqlite_executor.py
 # description     :SqliteExecutor
 # author          :Python超人
-# date            :2023-3-3
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================

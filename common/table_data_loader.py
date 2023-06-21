@@ -2,7 +2,7 @@
 # title           :table_data_loader.py
 # description     :QTableView数据加载器
 # author          :Python超人
-# date            :2022-3-3
+# date            :2023-6-3
 # link            :https://gitcode.net/pythoncr/
 # python_version  :3.8
 # ==============================================================================
