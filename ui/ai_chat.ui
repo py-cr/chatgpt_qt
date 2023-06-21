@@ -446,7 +446,7 @@ color: blue;</string>
                </size>
               </property>
               <property name="toolTip">
-               <string>先给1号AI机器人一个初始话题</string>
+               <string>给一个初始话题，注意：这个初始话题是1号AI讲给2号AI的</string>
               </property>
              </widget>
             </item>
