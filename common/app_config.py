@@ -9,3 +9,8 @@
 
 
 DB_NAME = "chatgpt.db"
+API_URL = "https://api.openai.com/v1/chat/completions"
+
+# 本地搭建 RWKV-Runner
+# https://github.com/josStorer/RWKV-Runner/releases
+# API_URL = "http://127.0.0.1:8000/chat/completions"

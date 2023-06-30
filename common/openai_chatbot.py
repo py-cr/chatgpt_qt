@@ -13,13 +13,13 @@ import traceback
 import openai
 import requests
 
+from common.app_config import API_URL
 from common.chatbot import Chatbot
 from common.str_utils import is_empty
 from common.ui_utils import find_file
 from db.db_ops import ConfigOp
 
 TIMEOUT_SECONDS = 30
-API_URL = "https://api.openai.com/v1/chat/completions"
 MAX_RETRY = 3
 
 
@@ -158,7 +158,7 @@ class OpenAiChatbot(Chatbot):
         if proxy_enabled is None:
             proxy_enabled = self.proxy_enabled
 
-        if proxy_server is None:
+        if proxy_server is None and hasattr(self, "proxy_server"):
             proxy_server = self.proxy_server
 
         headers, payload = self.generate_payload(input_messages, model_id, api_key)
