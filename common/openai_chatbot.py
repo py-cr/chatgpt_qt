@@ -99,8 +99,9 @@ class OpenAiChatbot(Chatbot):
             }
 
         """
-
-        if len(api_key) != 51:
+        if API_URL.index("127.0.0.1") > 4 or API_URL.index("localhost") > 4:
+            pass
+        elif len(api_key) != 51:
             raise AssertionError("你提供了错误的API_KEY。\n\n1. 临时解决方案：直接在输入区键入api_key，然后回车提交。\n\n2. 长效解决方案：在config.py中配置。")
 
         headers = {
