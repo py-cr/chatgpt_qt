@@ -298,8 +298,17 @@ def get_button_functions():
             json_data = {"suffix": "", "prefix": "", "btn_style": ""}
         else:
             json_data = json.loads(json_str)
-        suffix = json_data["suffix"]
-        prefix = json_data["prefix"]
+
+        if "suffix" in json_data:
+            suffix = json_data["suffix"]
+        else:
+            suffix = ""
+
+        if "prefix" in json_data:
+            prefix = json_data["prefix"]
+        else:
+            prefix = ""
+
         btn_style = json_data["btn_style"]
         if "sample" in json_data:
             sample = json_data["sample"]
