@@ -17,7 +17,12 @@ Python超人开发的ChatGPT桌面端是一款基于Python和PyQt5技术开发�
 <img src="https://gitcode.net/pythoncr/chatgpt_qt/-/raw/master/images/7.png?raw=true" width="45%">
 <img src="https://gitcode.net/pythoncr/chatgpt_qt/-/raw/master/images/8.png?raw=true" width="45%">
 
-# 抖音课堂：
+# 更多资源：
+<img src="images/chatgpt_list.jpg?raw=true" width="80.7%">
+<img src="images/universe_sim_list.jpg?raw=true" width="80.7%">
+<img src="images/python_oa_list.jpg?raw=true" width="80.7%">
+
+# 关注更多资源：
 <img src="https://gitcode.net/pythoncr/chatgpt_qt/-/raw/master/images/douyin_x.jpg" width="40%">
 
 # 课程下载
